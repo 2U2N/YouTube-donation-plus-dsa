@@ -1,0 +1,49 @@
+---
+title: "Reproduce"
+---
+
+## Requirements
+
+Install Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Install Quarto from <https://quarto.org/>.
+
+## Render The Site
+
+From the repository root:
+
+```bash
+quarto render
+```
+
+The rendered site is written to `docs/`.
+
+## Run The Pipeline
+
+The notebooks are ordered:
+
+1. Clean donated watch data.
+2. Clean donated search data.
+3. Scrape or provide metadata.
+4. Link metadata and add event-level indicators.
+5. Demonstrate the enriched measures.
+
+Notebook 03 requires real YouTube video IDs, a registered identifying token, and authorization to collect YouTube metadata. The public mock IDs are scrambled and cannot be scraped. If you do not run notebook 03 with your own real IDs, notebook 04 uses `data/demo_metadata/meta_data_public.csv` as a public offline fixture.
+
+## Publish With GitHub Pages
+
+One simple option is to configure GitHub Pages to serve the `docs/` folder from the `main` branch.
+
+After rendering locally:
+
+```bash
+git add .
+git commit -m "Render public Quarto site"
+git push
+```
+
+Then enable Pages in the repository settings.

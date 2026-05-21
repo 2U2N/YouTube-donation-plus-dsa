@@ -1,0 +1,50 @@
+---
+title: "Enhancing YouTube Data Donations With Platform Metadata"
+---
+
+This project demonstrates how donated YouTube watch histories can be linked with video-level platform metadata to create enriched exposure histories.
+
+The workflow combines mock Google Takeout-style data with a metadata table in order to show what researchers can learn once watch events, search histories, subscriptions, metadata, and availability signals are joined around the YouTube `video_id`.
+
+## What This Adds
+
+Raw watch histories tell us that a participant started watching a video at a particular time. After enrichment, the same watch event can also carry:
+
+- video duration, channel, popularity fields, format, and availability status;
+- whether the watch closely followed a donated YouTube search;
+- whether the video came from a donated subscribed channel;
+- whether the event was a Short or Long;
+- whether the event happened during the configured day or night period;
+- whether later metadata errors indicate an unavailable or problematic-view signal.
+
+## Workflow
+
+```{mermaid}
+flowchart TD
+  A["Mock Google Takeout data<br/>watch, search, subscriptions"] --> B["Clean donated histories"]
+  C["YouTube metadata<br/>yt-dlp or demo fixture"] --> D["Video-level metadata table"]
+  B --> E["Event-level enriched watch table"]
+  D --> E
+  E --> F["Search, subscription,<br/>Shorts/Longs, day/night,<br/>problematic-view indicators"]
+  F --> G["Showcase tables and figures"]
+```
+
+## Recommended Entry Point
+
+Start with [Notebook 05](scripts/05_demonstrate_enriched_exposure_measures.html). It shows what the enriched data looks like and produces compact figures that demonstrate the article-facing value of the method.
+
+Then use [the notebook guide](notebooks.html) to inspect the earlier cleaning, scraping, and linking steps.
+
+## Preview Figures
+
+![](outputs/figures/demo_pathway_mix.png)
+
+![](outputs/figures/demo_participant_measure_shares.png)
+
+![](outputs/figures/demo_daynight_shorts.png)
+
+![](outputs/figures/demo_problematic_views.png)
+
+## Repository
+
+The source repository is available at <https://github.com/2U2N/YouTube-donation-plus-dsa>.

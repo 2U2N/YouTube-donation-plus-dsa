@@ -1,0 +1,40 @@
+section,measure,value
+search,search_query_rows,90
+search,participants_with_search_history,3
+search,search_intervals_applied,"[(1, 55)]"
+search,searched_watch_events,60
+search,not_searched_watch_events,210
+search,watch_events_without_search_history,0
+subscription,subscription_files,3
+subscription,subscription_rows,30
+subscription,participants_with_subscription_history,3
+subscription,subscribed_watch_events,34
+subscription,not_subscribed_watch_events,179
+subscription,watch_events_without_subscription_status,57
+subscription,watch_events_missing_metadata_channel_id,57
+event_flags,analysis_timezone,Europe/Copenhagen
+event_flags,daytime_start_hour,6
+event_flags,daytime_end_hour,24
+event_flags,short_max_duration_seconds,180
+event_flags,short_max_aspect_ratio,1
+event_flags,shorts_watch_events,10
+event_flags,longs_watch_events,260
+event_flags,watch_events_missing_shorts_metadata,57
+event_flags,daytime_watch_events,237
+event_flags,nighttime_watch_events,33
+problematic_views,errored_unique_videos,54
+problematic_views,unique_generalized_error_messages,8
+problematic_views,alias_applied_videos,2
+problematic_views,unclassified_generalized_messages,0
+problematic_views,problematic_watch_events,10
+problematic_views,problematic_unique_videos,10
+problematic_views,assessment_label_count::No error,213
+problematic_views,assessment_label_count::Not problematic,41
+problematic_views,assessment_label_count::Problematic,10
+problematic_views,assessment_label_count::Removed due to external legal rights,6
+problematic_views,category_count::No error,213
+problematic_views,category_count::access management,33
+problematic_views,category_count::removed - account terminated,8
+problematic_views,category_count::unavailable,8
+problematic_views,category_count::removed - copyright claim,6
+problematic_views,category_count::removed - community guidelines violated,2

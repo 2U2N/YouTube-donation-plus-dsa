@@ -1,0 +1,38 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - notebooks.qmd
+    - data.qmd
+    - reproduce.qmd
+    - scripts/*.ipynb
+
+website:
+  title: "YouTube Donation + DSA Metadata Method"
+  repo-url: https://github.com/2U2N/YouTube-donation-plus-dsa
+  repo-actions: [source]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Overview
+      - href: notebooks.qmd
+        text: Notebooks
+      - href: data.qmd
+        text: Mock Data
+      - href: reproduce.qmd
+        text: Reproduce
+
+format:
+  html:
+    toc: true
+    number-sections: false
+    theme: cosmo
+    embed-resources: false
+
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+

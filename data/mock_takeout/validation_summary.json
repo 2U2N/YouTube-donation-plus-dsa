@@ -1,0 +1,207 @@
+{
+  "status": "passed",
+  "source": {
+    "watch_rows": 2530,
+    "search_rows": 812,
+    "watch_type_counts": {
+      "normal_watch": 2180,
+      "ad_watch": 348,
+      "other_watch": 2
+    },
+    "search_type_counts": {
+      "ad_search_history_row": 321,
+      "genuine_search": 491
+    },
+    "watch_key_sets": {
+      "activityControls|header|products|subtitles|time|title|titleUrl": 2031,
+      "activityControls|description|details|header|products|time|title|titleUrl": 320,
+      "activityControls|details|header|products|time|title|titleUrl": 29,
+      "activityControls|header|products|time|title|titleUrl": 149,
+      "activityControls|details|header|products|time|title": 1
+    },
+    "search_key_sets": {
+      "activityControls|description|details|header|products|time|title|titleUrl": 320,
+      "activityControls|header|products|time|title|titleUrl": 491,
+      "activityControls|details|header|products|time|title|titleUrl": 1
+    },
+    "watch_time_range": {
+      "min": "2015-03-30T13:55:07.337Z",
+      "max": "2026-01-04T11:54:38.114Z"
+    },
+    "search_time_range": {
+      "min": "2015-04-04T10:48:51.036Z",
+      "max": "2025-12-29T15:09:37.181Z"
+    }
+  },
+  "mock": {
+    "watch_rows": 300,
+    "search_rows": 120,
+    "watch_type_counts": {
+      "normal_watch": 270,
+      "ad_watch": 30
+    },
+    "search_type_counts": {
+      "genuine_search": 90,
+      "ad_search_history_row": 30
+    },
+    "watch_key_sets": {
+      "activityControls|header|products|subtitles|time|title|titleUrl": 246,
+      "activityControls|description|details|header|products|time|title|titleUrl": 27,
+      "activityControls|details|header|products|time|title|titleUrl": 3,
+      "activityControls|header|products|time|title|titleUrl": 24
+    },
+    "search_key_sets": {
+      "activityControls|header|products|time|title|titleUrl": 90,
+      "activityControls|description|details|header|products|time|title|titleUrl": 30
+    },
+    "watch_time_range": {
+      "min": "2015-03-30T13:56:42.847Z",
+      "max": "2025-04-01T20:43:25.151Z"
+    },
+    "search_time_range": {
+      "min": "2015-04-21T15:08:08.529Z",
+      "max": "2025-12-28T19:24:18.422Z"
+    },
+    "donors": {
+      "Alma": {
+        "watch_rows": 100,
+        "search_rows": 40,
+        "subscription_rows": 10,
+        "subscription_channel_ids": [
+          "UCDEMOCHANNEL00000051",
+          "UCDEMOCHANNEL00000067",
+          "UCDEMOCHANNEL00000081",
+          "UCDEMOCHANNEL00000027",
+          "UCDEMOCHANNEL00000137",
+          "UCDEMOCHANNEL00000105",
+          "UCDEMOCHANNEL00000007",
+          "UCDEMOCHANNEL00000162",
+          "UCDEMOCHANNEL00000023",
+          "UCDEMOCHANNEL00000171"
+        ],
+        "watch_type_counts": {
+          "normal_watch": 90,
+          "ad_watch": 10
+        },
+        "search_type_counts": {
+          "genuine_search": 30,
+          "ad_search_history_row": 10
+        },
+        "aligned_genuine_searches": 20,
+        "unaligned_genuine_searches": 10,
+        "watch_key_sets": {
+          "activityControls|header|products|subtitles|time|title|titleUrl": 82,
+          "activityControls|description|details|header|products|time|title|titleUrl": 8,
+          "activityControls|details|header|products|time|title|titleUrl": 2,
+          "activityControls|header|products|time|title|titleUrl": 8
+        },
+        "search_key_sets": {
+          "activityControls|header|products|time|title|titleUrl": 30,
+          "activityControls|description|details|header|products|time|title|titleUrl": 10
+        },
+        "watch_time_range": {
+          "min": "2015-03-30T13:56:42.847Z",
+          "max": "2025-03-24T07:32:25.697Z"
+        },
+        "search_time_range": {
+          "min": "2015-04-21T15:08:08.529Z",
+          "max": "2025-03-24T08:04:25.697Z"
+        }
+      },
+      "Beata": {
+        "watch_rows": 100,
+        "search_rows": 40,
+        "subscription_rows": 10,
+        "subscription_channel_ids": [
+          "UCDEMOCHANNEL00000051",
+          "UCDEMOCHANNEL00000050",
+          "UCDEMOCHANNEL00000155",
+          "UCDEMOCHANNEL00000123",
+          "UCDEMOCHANNEL00000046",
+          "UCDEMOCHANNEL00000006",
+          "UCDEMOCHANNEL00000125",
+          "UCDEMOCHANNEL00000008",
+          "UCDEMOCHANNEL00000159",
+          "UCDEMOCHANNEL00000080"
+        ],
+        "watch_type_counts": {
+          "normal_watch": 90,
+          "ad_watch": 10
+        },
+        "search_type_counts": {
+          "ad_search_history_row": 10,
+          "genuine_search": 30
+        },
+        "aligned_genuine_searches": 20,
+        "unaligned_genuine_searches": 10,
+        "watch_key_sets": {
+          "activityControls|header|products|subtitles|time|title|titleUrl": 82,
+          "activityControls|description|details|header|products|time|title|titleUrl": 10,
+          "activityControls|header|products|time|title|titleUrl": 8
+        },
+        "search_key_sets": {
+          "activityControls|description|details|header|products|time|title|titleUrl": 10,
+          "activityControls|header|products|time|title|titleUrl": 30
+        },
+        "watch_time_range": {
+          "min": "2015-04-14T15:06:59.910Z",
+          "max": "2025-04-01T20:43:25.151Z"
+        },
+        "search_time_range": {
+          "min": "2015-05-28T09:35:34.366Z",
+          "max": "2025-12-28T19:24:18.422Z"
+        }
+      },
+      "Carmen": {
+        "watch_rows": 100,
+        "search_rows": 40,
+        "subscription_rows": 10,
+        "subscription_channel_ids": [
+          "UCDEMOCHANNEL00000142",
+          "UCDEMOCHANNEL00000172",
+          "UCDEMOCHANNEL00000161",
+          "UCDEMOCHANNEL00000041",
+          "UCDEMOCHANNEL00000164",
+          "UCDEMOCHANNEL00000109",
+          "UCDEMOCHANNEL00000108",
+          "UCDEMOCHANNEL00000079",
+          "UCDEMOCHANNEL00000092",
+          "UCDEMOCHANNEL00000093"
+        ],
+        "watch_type_counts": {
+          "normal_watch": 90,
+          "ad_watch": 10
+        },
+        "search_type_counts": {
+          "genuine_search": 30,
+          "ad_search_history_row": 10
+        },
+        "aligned_genuine_searches": 20,
+        "unaligned_genuine_searches": 10,
+        "watch_key_sets": {
+          "activityControls|header|products|subtitles|time|title|titleUrl": 82,
+          "activityControls|description|details|header|products|time|title|titleUrl": 9,
+          "activityControls|header|products|time|title|titleUrl": 8,
+          "activityControls|details|header|products|time|title|titleUrl": 1
+        },
+        "search_key_sets": {
+          "activityControls|header|products|time|title|titleUrl": 30,
+          "activityControls|description|details|header|products|time|title|titleUrl": 10
+        },
+        "watch_time_range": {
+          "min": "2015-04-07T09:06:00.632Z",
+          "max": "2025-03-26T13:12:19.748Z"
+        },
+        "search_time_range": {
+          "min": "2015-05-28T17:28:00.375Z",
+          "max": "2025-03-26T13:44:19.748Z"
+        }
+      }
+    }
+  },
+  "intentional_deviations": [
+    "Genuine search row timestamps were rewritten to create 20 aligned and 10 unaligned searches per donor.",
+    "Unaligned search timestamps may extend slightly beyond a donor's sampled watch range to guarantee no false alignment.",
+    "Subscription CSV rows are derived from each donor's generated watch-history subtitles, not from the one-row source subscriptions file."
+  ]
+}

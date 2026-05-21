@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>01 Clean Donated YouTube Watch Data – YouTube Donation + DSA Metadata Method</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">YouTube Donation + DSA Metadata Method</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html"> 
+<span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../data.html"> 
+<span class="menu-text">Mock Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../reproduce.html"> 
+<span class="menu-text">Reproduce</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-this-notebook-produces" id="toc-what-this-notebook-produces" class="nav-link active" data-scroll-target="#what-this-notebook-produces">What This Notebook Produces</a></li>
+  <li><a href="#locate-the-project-and-input-data" id="toc-locate-the-project-and-input-data" class="nav-link" data-scroll-target="#locate-the-project-and-input-data">Locate The Project And Input Data</a></li>
+  <li><a href="#find-donated-watch-history-files" id="toc-find-donated-watch-history-files" class="nav-link" data-scroll-target="#find-donated-watch-history-files">Find Donated Watch-History Files</a></li>
+  <li><a href="#load-and-combine-watch-histories" id="toc-load-and-combine-watch-histories" class="nav-link" data-scroll-target="#load-and-combine-watch-histories">Load And Combine Watch Histories</a></li>
+  <li><a href="#standardize-columns" id="toc-standardize-columns" class="nav-link" data-scroll-target="#standardize-columns">Standardize Columns</a></li>
+  <li><a href="#parse-timestamps" id="toc-parse-timestamps" class="nav-link" data-scroll-target="#parse-timestamps">Parse Timestamps</a></li>
+  <li><a href="#extract-youtube-video-ids" id="toc-extract-youtube-video-ids" class="nav-link" data-scroll-target="#extract-youtube-video-ids">Extract YouTube Video IDs</a></li>
+  <li><a href="#handle-details-and-classify-rows" id="toc-handle-details-and-classify-rows" class="nav-link" data-scroll-target="#handle-details-and-classify-rows">Handle <code>details</code> And Classify Rows</a></li>
+  <li><a href="#extract-channel-fields" id="toc-extract-channel-fields" class="nav-link" data-scroll-target="#extract-channel-fields">Extract Channel Fields</a></li>
+  <li><a href="#clean-multilingual-watch-titles" id="toc-clean-multilingual-watch-titles" class="nav-link" data-scroll-target="#clean-multilingual-watch-titles">Clean Multilingual Watch Titles</a></li>
+  <li><a href="#prefix-diagnostics" id="toc-prefix-diagnostics" class="nav-link" data-scroll-target="#prefix-diagnostics">Prefix Diagnostics</a></li>
+  <li><a href="#create-clean-and-side-tables" id="toc-create-clean-and-side-tables" class="nav-link" data-scroll-target="#create-clean-and-side-tables">Create Clean And Side Tables</a></li>
+  <li><a href="#diagnostics" id="toc-diagnostics" class="nav-link" data-scroll-target="#diagnostics">Diagnostics</a></li>
+  <li><a href="#save-outputs" id="toc-save-outputs" class="nav-link" data-scroll-target="#save-outputs">Save Outputs</a></li>
+  <li><a href="#result" id="toc-result" class="nav-link" data-scroll-target="#result">Result</a>
+  <ul class="collapse">
+  <li><a href="#stored-table-previews" id="toc-stored-table-previews" class="nav-link" data-scroll-target="#stored-table-previews">Stored Table Previews</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/2U2N/YouTube-donation-plus-dsa/blob/main/scripts/01_clean_donated_watch_data.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">01 Clean Donated YouTube Watch Data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This notebook demonstrates the first step in the data-donation workflow: turning raw Google Takeout-style YouTube watch-history files into clean event-level tables.</p>
+<p>The notebook uses mock donor data stored in <code>data/mock_takeout</code>. The same logic can be adapted to confidential GDPR data donations by changing the input path and adding project-specific consent, exclusion, and participant metadata rules.</p>
+<section id="what-this-notebook-produces" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-notebook-produces">What This Notebook Produces</h2>
+<p>The notebook writes several CSV files to <code>outputs/tables</code>.</p>
+<ul>
+<li><code>watch_histories.csv</code>: all donated watch-history rows combined and standardized.</li>
+<li><code>video_histories.csv</code>: the validated video-watch table used by later notebooks.</li>
+<li><code>music_histories.csv</code>: rows identified as YouTube Music.</li>
+<li><code>ad_watch_histories.csv</code>: rows marked as Google Ads.</li>
+<li><code>other_histories.csv</code>: rows that are neither validated videos, music, nor ads.</li>
+<li><code>title_prefix_diagnostics.csv</code>: counts showing which localized watch-action prefixes were recognized.</li>
+</ul>
+<p>The main analysis handoff is <code>video_histories.csv</code>, where each row represents one retained YouTube video watch event with a participant ID, timestamp, URL, <code>video_id</code>, cleaned title, and channel information when available.</p>
+<div id="a533df3c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="locate-the-project-and-input-data" class="level2">
+<h2 class="anchored" data-anchor-id="locate-the-project-and-input-data">Locate The Project And Input Data</h2>
+<p>The notebook is designed to run from the Quarto project root or from the <code>scripts</code> folder. The helper below walks upward from the current working directory until it finds the Quarto project and the mock Takeout folder.</p>
+<div id="8c43703e" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_project_root(start<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> Path.cwd() <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> Path(start)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> candidate <span class="kw">in</span> [start, <span class="op">*</span>start.parents]:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        has_quarto_project <span class="op">=</span> (candidate <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        has_mock_data <span class="op">=</span> (candidate <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"mock_takeout"</span>).exists()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> has_quarto_project <span class="kw">and</span> has_mock_data:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> candidate</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Could not find the Quarto project root. Run this notebook from "</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inside youtube_donation_dsa_method."</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> find_project_root()</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>MOCK_TAKEOUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"mock_takeout"</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"tables"</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>WATCH_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"watch_histories.csv"</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>VIDEO_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"video_histories.csv"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>MUSIC_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"music_histories.csv"</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>AD_WATCH_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"ad_watch_histories.csv"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>OTHER_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"other_histories.csv"</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>TITLE_PREFIX_DIAGNOSTICS_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"title_prefix_diagnostics.csv"</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Project folder: </span><span class="sc">{</span>PROJECT_ROOT<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mock data folder: </span><span class="sc">{</span>MOCK_TAKEOUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Output folder: </span><span class="sc">{</span>OUTPUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Project folder: youtube-donation-dsa-method-public
+Mock data folder: data/mock_takeout
+Output folder: outputs/tables</code></pre>
+</div>
+</div>
+</section>
+<section id="find-donated-watch-history-files" class="level2">
+<h2 class="anchored" data-anchor-id="find-donated-watch-history-files">Find Donated Watch-History Files</h2>
+<p>Google Takeout stores YouTube watch history at <code>YouTube and YouTube Music/history/watch-history.json</code>. In this mock dataset, each donor has one folder, so the donor folder name becomes the participant identifier.</p>
+<div id="7a54aa96" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>watch_files <span class="op">=</span> <span class="bu">sorted</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    MOCK_TAKEOUT_DIR.glob(<span class="st">"*/YouTube and YouTube Music/history/watch-history.json"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>watch_file_index <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Participant ID"</span>: [path.relative_to(MOCK_TAKEOUT_DIR).parts[<span class="dv">0</span>] <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_history_file"</span>: [path.relative_to(PROJECT_ROOT).as_posix() <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>watch_file_index</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">watch_history_file</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alma</td>
+<td>data/mock_takeout/Alma/YouTube and YouTube Mus...</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Beata</td>
+<td>data/mock_takeout/Beata/YouTube and YouTube Mu...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Carmen</td>
+<td>data/mock_takeout/Carmen/YouTube and YouTube M...</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="load-and-combine-watch-histories" class="level2">
+<h2 class="anchored" data-anchor-id="load-and-combine-watch-histories">Load And Combine Watch Histories</h2>
+<p>Each JSON file is loaded into a dataframe, annotated with <code>Participant ID</code>, and then combined into one raw watch-history table. At this point, the table still contains videos, ads, music rows, and any other Takeout row types that may appear.</p>
+<div id="22d3163f" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_watch_history(path):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    participant_id <span class="op">=</span> path.relative_to(MOCK_TAKEOUT_DIR).parts[<span class="dv">0</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.read_json(path)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    data[<span class="st">"Participant ID"</span>] <span class="op">=</span> participant_id</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>watch_histories <span class="op">=</span> pd.concat(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    [load_watch_history(path) <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ignore_index<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>watch_histories.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>(300, 10)</code></pre>
+</div>
+</div>
+</section>
+<section id="standardize-columns" class="level2">
+<h2 class="anchored" data-anchor-id="standardize-columns">Standardize Columns</h2>
+<p>The original Takeout fields are useful but not always named for analysis. We rename <code>title</code> to <code>watched_title</code> and <code>titleUrl</code> to <code>url</code>, then keep the columns needed for cleaning, auditing, and side-table exports.</p>
+<div id="6be8d2a1" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>watch_histories <span class="op">=</span> watch_histories.rename(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>{</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"watched_title"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"titleUrl"</span>: <span class="st">"url"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>core_columns <span class="op">=</span> [</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participant ID"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"header"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watched_title"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"url"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"details"</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"subtitles"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>watch_histories <span class="op">=</span> watch_histories.reindex(columns<span class="op">=</span>core_columns)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>watch_histories.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">header</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">details</th>
+<th data-quarto-table-cell-role="th">subtitles</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alma</td>
+<td>2025-03-24T07:32:25.697Z</td>
+<td>YouTube</td>
+<td>Watched Demo video 072</td>
+<td>https://www.youtube.com/watch?v=VID00000072</td>
+<td>NaN</td>
+<td>[{'name': 'Demo channel 051', 'url': 'https://...</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alma</td>
+<td>2025-03-13T13:53:45.738Z</td>
+<td>YouTube</td>
+<td>Watched Demo video 213</td>
+<td>https://www.youtube.com/watch?v=VID00000213</td>
+<td>NaN</td>
+<td>[{'name': 'Demo channel 067', 'url': 'https://...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Alma</td>
+<td>2025-02-04T21:01:38.803Z</td>
+<td>YouTube</td>
+<td>Watched Demo video 051</td>
+<td>https://www.youtube.com/watch?v=VID00000051</td>
+<td>NaN</td>
+<td>[{'name': 'Demo channel 081', 'url': 'https://...</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Alma</td>
+<td>2025-01-30T11:00:54.583Z</td>
+<td>YouTube</td>
+<td>Watched Demo video 122</td>
+<td>https://www.youtube.com/watch?v=VID00000122</td>
+<td>NaN</td>
+<td>[{'name': 'Demo channel 027', 'url': 'https://...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Alma</td>
+<td>2024-12-13T07:07:08.189Z</td>
+<td>YouTube</td>
+<td>Watched Demo video 157</td>
+<td>https://www.youtube.com/watch?v=VID00000157</td>
+<td>NaN</td>
+<td>[{'name': 'Demo channel 137', 'url': 'https://...</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="parse-timestamps" class="level2">
+<h2 class="anchored" data-anchor-id="parse-timestamps">Parse Timestamps</h2>
+<p>Takeout timestamps are ISO-formatted UTC strings. Some rows include milliseconds and some do not, so we use pandas’ ISO8601 parser explicitly.</p>
+<div id="06cbbae9" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"time"</span>] <span class="op">=</span> pd.to_datetime(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    watch_histories[<span class="st">"time"</span>],</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"ISO8601"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    utc<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"time"</span>].agg([<span class="st">"min"</span>, <span class="st">"max"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>min   2015-03-30 13:56:42.847000+00:00
+max   2025-04-01 20:43:25.151000+00:00
+Name: time, dtype: datetime64[ns, UTC]</code></pre>
+</div>
+</div>
+</section>
+<section id="extract-youtube-video-ids" class="level2">
+<h2 class="anchored" data-anchor-id="extract-youtube-video-ids">Extract YouTube Video IDs</h2>
+<p>The <code>video_id</code> is the stable join key for linking donated watch events to scraped or platform-provided metadata. We extract it only from standard YouTube watch URLs with an 11-character ID.</p>
+<div id="48960ff9" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>YOUTUBE_WATCH_URL <span class="op">=</span> re.<span class="bu">compile</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"</span><span class="dv">^</span><span class="vs">https://www</span><span class="ch">\.</span><span class="vs">youtube</span><span class="ch">\.</span><span class="vs">com/watch</span><span class="ch">\?</span><span class="vs">v=</span><span class="kw">(</span><span class="pp">[A-Za-z0-9_-]</span><span class="op">{11}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_video_id(url):</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(url, <span class="bu">str</span>):</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.NA</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> YOUTUBE_WATCH_URL.match(url)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> match.group(<span class="dv">1</span>) <span class="cf">if</span> match <span class="cf">else</span> pd.NA</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"video_id"</span>] <span class="op">=</span> watch_histories[<span class="st">"url"</span>].<span class="bu">apply</span>(extract_video_id)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"has_valid_video_id"</span>] <span class="op">=</span> watch_histories[<span class="st">"video_id"</span>].notna()</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>watch_histories[[<span class="st">"watched_title"</span>, <span class="st">"url"</span>, <span class="st">"video_id"</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Watched Demo video 072</td>
+<td>https://www.youtube.com/watch?v=VID00000072</td>
+<td>VID00000072</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Watched Demo video 213</td>
+<td>https://www.youtube.com/watch?v=VID00000213</td>
+<td>VID00000213</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Watched Demo video 051</td>
+<td>https://www.youtube.com/watch?v=VID00000051</td>
+<td>VID00000051</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Watched Demo video 122</td>
+<td>https://www.youtube.com/watch?v=VID00000122</td>
+<td>VID00000122</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Watched Demo video 157</td>
+<td>https://www.youtube.com/watch?v=VID00000157</td>
+<td>VID00000157</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="handle-details-and-classify-rows" class="level2">
+<h2 class="anchored" data-anchor-id="handle-details-and-classify-rows">Handle <code>details</code> And Classify Rows</h2>
+<p>This step follows the validated selection mechanic from the original workflow: a retained video-watch row must have a standard watch URL, an 11-character <code>video_id</code>, and no <code>details</code> value. Rows with <code>details</code> are excluded from <code>video_histories</code> because in the original data this field captured ads and other non-standard watch-history records.</p>
+<p>We still detect Google Ads explicitly and save them separately, so readers can inspect what was excluded.</p>
+<div id="8936426d" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> details_missing(value):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This mirrors the original `details.isna()` selection rule.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Lists or dictionaries mean Takeout supplied a details field, so the row is not a clean video watch.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(value, (<span class="bu">list</span>, <span class="bu">dict</span>)):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">bool</span>(pd.isna(value))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> has_google_ads_marker(details):</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(details, <span class="bu">list</span>):</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">any</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">isinstance</span>(item, <span class="bu">dict</span>) <span class="kw">and</span> item.get(<span class="st">"name"</span>) <span class="op">==</span> <span class="st">"From Google Ads"</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> item <span class="kw">in</span> details</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"details_missing"</span>] <span class="op">=</span> watch_histories[<span class="st">"details"</span>].<span class="bu">apply</span>(details_missing)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"has_google_ads_marker"</span>] <span class="op">=</span> watch_histories[<span class="st">"details"</span>].<span class="bu">apply</span>(has_google_ads_marker)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"is_youtube_music"</span>] <span class="op">=</span> watch_histories[<span class="st">"header"</span>].eq(<span class="st">"YouTube Music"</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>video_mask <span class="op">=</span> (</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    watch_histories[<span class="st">"has_valid_video_id"</span>]</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> watch_histories[<span class="st">"details_missing"</span>]</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> <span class="op">~</span>watch_histories[<span class="st">"is_youtube_music"</span>]</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>music_mask <span class="op">=</span> watch_histories[<span class="st">"is_youtube_music"</span>]</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>ad_watch_mask <span class="op">=</span> watch_histories[<span class="st">"has_google_ads_marker"</span>]</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>other_mask <span class="op">=</span> <span class="op">~</span>(video_mask <span class="op">|</span> music_mask <span class="op">|</span> ad_watch_mask)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify_watch_row(row):</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"is_youtube_music"</span>]:</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"youtube_music"</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"has_valid_video_id"</span>] <span class="kw">and</span> row[<span class="st">"details_missing"</span>]:</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"video_watch"</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"has_google_ads_marker"</span>]:</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"ad_watch"</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"has_valid_video_id"</span>]:</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"video_with_details"</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"other_watch_row"</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"watch_row_type"</span>] <span class="op">=</span> watch_histories.<span class="bu">apply</span>(classify_watch_row, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"watch_row_type"</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>watch_row_type
+video_watch    270
+ad_watch        30
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="extract-channel-fields" class="level2">
+<h2 class="anchored" data-anchor-id="extract-channel-fields">Extract Channel Fields</h2>
+<p>Takeout often stores channel information inside the nested <code>subtitles</code> field. We extract the first channel name and URL when available. Later notebooks can use these fields to check subscription-linked exposure.</p>
+<div id="2832ade3" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first_subtitle_field(subtitles, field):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(subtitles, <span class="bu">list</span>) <span class="kw">or</span> <span class="kw">not</span> subtitles:</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.NA</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    first <span class="op">=</span> subtitles[<span class="dv">0</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(first, <span class="bu">dict</span>):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.NA</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> first.get(field, pd.NA)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_channel_id(channel_url):</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(channel_url, <span class="bu">str</span>):</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.NA</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> re.match(<span class="vs">r"</span><span class="dv">^</span><span class="vs">https</span><span class="op">?</span><span class="vs">://www</span><span class="ch">\.</span><span class="vs">youtube</span><span class="ch">\.</span><span class="vs">com/channel/</span><span class="kw">(</span><span class="pp">[A-Za-z0-9_-]</span><span class="op">+</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, channel_url)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> match.group(<span class="dv">1</span>) <span class="cf">if</span> match <span class="cf">else</span> pd.NA</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"channel_title"</span>] <span class="op">=</span> watch_histories[<span class="st">"subtitles"</span>].<span class="bu">apply</span>(</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> subtitles: first_subtitle_field(subtitles, <span class="st">"name"</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"channel_url"</span>] <span class="op">=</span> watch_histories[<span class="st">"subtitles"</span>].<span class="bu">apply</span>(</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> subtitles: first_subtitle_field(subtitles, <span class="st">"url"</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"channel_id"</span>] <span class="op">=</span> watch_histories[<span class="st">"channel_url"</span>].<span class="bu">apply</span>(extract_channel_id)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>watch_histories[[<span class="st">"channel_title"</span>, <span class="st">"channel_url"</span>, <span class="st">"channel_id"</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Demo channel 051</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000051</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Demo channel 067</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000067</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Demo channel 081</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000081</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Demo channel 027</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000027</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Demo channel 137</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000137</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="clean-multilingual-watch-titles" class="level2">
+<h2 class="anchored" data-anchor-id="clean-multilingual-watch-titles">Clean Multilingual Watch Titles</h2>
+<p>Google localizes the action prefix in Takeout titles according to the donor account language. The video title might start with <code>Watched</code>, <code>Så</code>, <code>Hai guardato</code>, <code>Просмотрено видео</code>, or another localized phrase.</p>
+<p>We therefore keep a small, explicit lookup table of known watch-action prefixes from the original workflow. The notebook removes only known prefixes, records which prefix was removed, and creates a diagnostic for titles where no known prefix was recognized. This avoids silently mangling titles when a new account language appears.</p>
+<div id="5c574366" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>WATCH_ACTION_PREFIXES <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"language_hint"</span>: <span class="st">"English"</span>, <span class="st">"prefix"</span>: <span class="st">"Watched "</span>},</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"language_hint"</span>: <span class="st">"Danish/Norwegian"</span>, <span class="st">"prefix"</span>: <span class="st">"Så "</span>},</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"language_hint"</span>: <span class="st">"Italian"</span>, <span class="st">"prefix"</span>: <span class="st">"Hai guardato "</span>},</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"language_hint"</span>: <span class="st">"Russian"</span>, <span class="st">"prefix"</span>: <span class="st">"Просмотрено видео "</span>},</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"language_hint"</span>: <span class="st">"Polish"</span>, <span class="st">"prefix"</span>: <span class="st">"Obejrzano: "</span>},</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>prefix_lookup <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">zip</span>(WATCH_ACTION_PREFIXES[<span class="st">"prefix"</span>], WATCH_ACTION_PREFIXES[<span class="st">"language_hint"</span>])</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>WATCH_PREFIX_PATTERN <span class="op">=</span> re.<span class="bu">compile</span>(</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"^("</span> <span class="op">+</span> <span class="st">"|"</span>.join(re.escape(prefix) <span class="cf">for</span> prefix <span class="kw">in</span> <span class="bu">sorted</span>(prefix_lookup, key<span class="op">=</span><span class="bu">len</span>, reverse<span class="op">=</span><span class="va">True</span>)) <span class="op">+</span> <span class="st">")"</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>NON_WORD_SYMBOLS <span class="op">=</span> re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\w\s</span><span class="ch">\u0400</span><span class="pp">-</span><span class="ch">\u04FF</span><span class="pp">]</span><span class="vs">"</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>WATCH_ACTION_PREFIXES</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">language_hint</th>
+<th data-quarto-table-cell-role="th">prefix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>English</td>
+<td>Watched</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Danish/Norwegian</td>
+<td>Så</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Italian</td>
+<td>Hai guardato</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Russian</td>
+<td>Просмотрено видео</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Polish</td>
+<td>Obejrzano:</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="9ffa8eb1" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_known_watch_prefix(title):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(title, <span class="bu">str</span>):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.Series(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            {</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">"watch_action_prefix"</span>: pd.NA,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"watch_action_language_hint"</span>: pd.NA,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"prefix_removed"</span>: <span class="va">False</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"title_without_watch_prefix"</span>: pd.NA,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    match <span class="op">=</span> WATCH_PREFIX_PATTERN.match(title)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> match:</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.Series(</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>            {</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"watch_action_prefix"</span>: pd.NA,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">"watch_action_language_hint"</span>: pd.NA,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">"prefix_removed"</span>: <span class="va">False</span>,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"title_without_watch_prefix"</span>: title,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    prefix <span class="op">=</span> match.group(<span class="dv">1</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">"watch_action_prefix"</span>: prefix.strip(),</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">"watch_action_language_hint"</span>: prefix_lookup[prefix],</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">"prefix_removed"</span>: <span class="va">True</span>,</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">"title_without_watch_prefix"</span>: title[match.end() :].strip(),</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_title_text(title):</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(title, <span class="bu">str</span>):</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.NA</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    without_symbols <span class="op">=</span> NON_WORD_SYMBOLS.sub(<span class="st">""</span>, title)</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, without_symbols).strip()</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>prefix_columns <span class="op">=</span> watch_histories[<span class="st">"watched_title"</span>].<span class="bu">apply</span>(split_known_watch_prefix)</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>watch_histories[</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_action_prefix"</span>,</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_action_language_hint"</span>,</span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">"prefix_removed"</span>,</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title_without_watch_prefix"</span>,</span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>] <span class="op">=</span> prefix_columns</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"clean_title"</span>] <span class="op">=</span> watch_histories[<span class="st">"title_without_watch_prefix"</span>].<span class="bu">apply</span>(clean_title_text)</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>watch_histories[</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"watched_title"</span>, <span class="st">"watch_action_prefix"</span>, <span class="st">"watch_action_language_hint"</span>, <span class="st">"clean_title"</span>]</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Watched Demo video 072</td>
+<td>Watched</td>
+<td>English</td>
+<td>Demo video 072</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Watched Demo video 213</td>
+<td>Watched</td>
+<td>English</td>
+<td>Demo video 213</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Watched Demo video 051</td>
+<td>Watched</td>
+<td>English</td>
+<td>Demo video 051</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Watched Demo video 122</td>
+<td>Watched</td>
+<td>English</td>
+<td>Demo video 122</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Watched Demo video 157</td>
+<td>Watched</td>
+<td>English</td>
+<td>Demo video 157</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="prefix-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="prefix-diagnostics">Prefix Diagnostics</h2>
+<p>The prefix diagnostic is a guardrail for real donation projects. If a participant’s Takeout export uses an account language that is not in <code>WATCH_ACTION_PREFIXES</code>, the title will remain usable, but the action phrase will not be removed. Those cases should be inspected and the prefix list should be extended deliberately.</p>
+<div id="1a41c8be" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>prefix_diagnostics <span class="op">=</span> (</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    watch_histories.assign(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        watch_action_prefix<span class="op">=</span>watch_histories[<span class="st">"watch_action_prefix"</span>].fillna(<span class="st">"UNRECOGNIZED"</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        watch_action_language_hint<span class="op">=</span>watch_histories[<span class="st">"watch_action_language_hint"</span>].fillna(<span class="st">"UNRECOGNIZED"</span>),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">"watch_action_prefix"</span>, <span class="st">"watch_action_language_hint"</span>], dropna<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    .size()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    .reset_index(name<span class="op">=</span><span class="st">"rows"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"rows"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>prefix_diagnostics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">rows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Watched</td>
+<td>English</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="d7b63a94" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>unrecognized_prefix_mask <span class="op">=</span> watch_histories[<span class="st">"has_valid_video_id"</span>] <span class="op">&amp;</span> <span class="op">~</span>watch_histories[<span class="st">"prefix_removed"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>unrecognized_title_prefix_examples <span class="op">=</span> (</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    watch_histories.loc[</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        unrecognized_prefix_mask,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        [<span class="st">"Participant ID"</span>, <span class="st">"watched_title"</span>, <span class="st">"url"</span>],</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        possible_prefix<span class="op">=</span><span class="kw">lambda</span> df: df[<span class="st">"watched_title"</span>].<span class="bu">str</span>.extract(<span class="vs">r"</span><span class="dv">^</span><span class="kw">(</span><span class="dv">\S</span><span class="op">+</span>(?:<span class="dv">\s</span><span class="op">+</span><span class="dv">\S</span><span class="op">+</span>)<span class="op">{0,2}</span><span class="kw">)</span><span class="vs">"</span>)[<span class="dv">0</span>]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">20</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>unrecognized_title_prefix_examples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">possible_prefix</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="create-clean-and-side-tables" class="level2">
+<h2 class="anchored" data-anchor-id="create-clean-and-side-tables">Create Clean And Side Tables</h2>
+<p><code>video_histories</code> is the narrow analysis table. It uses the validated rule from above: standard video URL, valid <code>video_id</code>, and missing <code>details</code>.</p>
+<p>The side tables preserve rows that are analytically interesting but excluded from ordinary video exposure: YouTube Music, Google Ads, and other unclassified rows.</p>
+<div id="f1b1a2a6" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>watch_export_columns <span class="op">=</span> [</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participant ID"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"header"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watch_row_type"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watched_title"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"title_without_watch_prefix"</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clean_title"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watch_action_prefix"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watch_action_language_hint"</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"prefix_removed"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"url"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"video_id"</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"has_valid_video_id"</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"details_missing"</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"has_google_ads_marker"</span>,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"is_youtube_music"</span>,</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"channel_title"</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"channel_url"</span>,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"channel_id"</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"details"</span>,</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>video_columns <span class="op">=</span> [</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participant ID"</span>,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time"</span>,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watched_title"</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clean_title"</span>,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watch_action_prefix"</span>,</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watch_action_language_hint"</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"url"</span>,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"video_id"</span>,</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"channel_title"</span>,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"channel_url"</span>,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"channel_id"</span>,</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>watch_histories_export <span class="op">=</span> (</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    watch_histories.loc[:, watch_export_columns]</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    .sort_values([<span class="st">"Participant ID"</span>, <span class="st">"time"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>video_histories <span class="op">=</span> (</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    watch_histories.loc[video_mask, video_columns]</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    .sort_values([<span class="st">"Participant ID"</span>, <span class="st">"time"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>music_histories <span class="op">=</span> (</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>    watch_histories.loc[music_mask, watch_export_columns]</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    .sort_values([<span class="st">"Participant ID"</span>, <span class="st">"time"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>ad_watch_histories <span class="op">=</span> (</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>    watch_histories.loc[ad_watch_mask, watch_export_columns]</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>    .sort_values([<span class="st">"Participant ID"</span>, <span class="st">"time"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>other_histories <span class="op">=</span> (</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>    watch_histories.loc[other_mask, watch_export_columns]</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>    .sort_values([<span class="st">"Participant ID"</span>, <span class="st">"time"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>video_histories.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alma</td>
+<td>2025-03-24 07:32:25.697000+00:00</td>
+<td>Watched Demo video 072</td>
+<td>Demo video 072</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000072</td>
+<td>VID00000072</td>
+<td>Demo channel 051</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000051</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alma</td>
+<td>2025-03-13 13:53:45.738000+00:00</td>
+<td>Watched Demo video 213</td>
+<td>Demo video 213</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000213</td>
+<td>VID00000213</td>
+<td>Demo channel 067</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000067</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Alma</td>
+<td>2025-02-04 21:01:38.803000+00:00</td>
+<td>Watched Demo video 051</td>
+<td>Demo video 051</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000051</td>
+<td>VID00000051</td>
+<td>Demo channel 081</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000081</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Alma</td>
+<td>2025-01-30 11:00:54.583000+00:00</td>
+<td>Watched Demo video 122</td>
+<td>Demo video 122</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000122</td>
+<td>VID00000122</td>
+<td>Demo channel 027</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000027</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Alma</td>
+<td>2024-12-13 07:07:08.189000+00:00</td>
+<td>Watched Demo video 157</td>
+<td>Demo video 157</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000157</td>
+<td>VID00000157</td>
+<td>Demo channel 137</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000137</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="diagnostics">Diagnostics</h2>
+<p>These checks document what happened during cleaning. For the mock dataset, we expect 300 raw watch-history rows, 270 retained video watches, and 30 ad rows. Music and other rows are included in the workflow even when this mock dataset has none.</p>
+<div id="3ba48d2f" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>diagnostics <span class="op">=</span> {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"donor_files_loaded"</span>: <span class="bu">len</span>(watch_files),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw_watch_rows"</span>: <span class="bu">len</span>(watch_histories),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"combined_watch_history_rows"</span>: <span class="bu">len</span>(watch_histories_export),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"video_history_rows"</span>: <span class="bu">len</span>(video_histories),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"music_history_rows"</span>: <span class="bu">len</span>(music_histories),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ad_watch_history_rows"</span>: <span class="bu">len</span>(ad_watch_histories),</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"other_history_rows"</span>: <span class="bu">len</span>(other_histories),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invalid_or_missing_video_id_rows"</span>: <span class="bu">int</span>(watch_histories[<span class="st">"video_id"</span>].isna().<span class="bu">sum</span>()),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unrecognized_video_prefix_rows"</span>: <span class="bu">int</span>(unrecognized_prefix_mask.<span class="bu">sum</span>()),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time_min"</span>: watch_histories[<span class="st">"time"</span>].<span class="bu">min</span>(),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"time_max"</span>: watch_histories[<span class="st">"time"</span>].<span class="bu">max</span>(),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>pd.Series(diagnostics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>donor_files_loaded                                                 3
+raw_watch_rows                                                   300
+combined_watch_history_rows                                      300
+video_history_rows                                               270
+music_history_rows                                                 0
+ad_watch_history_rows                                             30
+other_history_rows                                                 0
+invalid_or_missing_video_id_rows                                   0
+unrecognized_video_prefix_rows                                     0
+time_min                            2015-03-30 13:56:42.847000+00:00
+time_max                            2025-04-01 20:43:25.151000+00:00
+dtype: object</code></pre>
+</div>
+</div>
+<div id="b6717ea9" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"all_watch_rows"</span>: watch_histories.groupby(<span class="st">"Participant ID"</span>).size(),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"video_rows"</span>: video_histories.groupby(<span class="st">"Participant ID"</span>).size(),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ad_rows"</span>: ad_watch_histories.groupby(<span class="st">"Participant ID"</span>).size(),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>).fillna(<span class="dv">0</span>).astype(<span class="bu">int</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">all_watch_rows</th>
+<th data-quarto-table-cell-role="th">video_rows</th>
+<th data-quarto-table-cell-role="th">ad_rows</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Alma</th>
+<td>100</td>
+<td>90</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Beata</th>
+<td>100</td>
+<td>90</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Carmen</th>
+<td>100</td>
+<td>90</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="efc65228" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>watch_histories[<span class="st">"watch_row_type"</span>].value_counts().rename_axis(<span class="st">"watch_row_type"</span>).to_frame(<span class="st">"rows"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rows</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">watch_row_type</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">video_watch</th>
+<td>270</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">ad_watch</th>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="save-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="save-outputs">Save Outputs</h2>
+<p>The combined <code>watch_histories.csv</code> keeps the full cleaned row universe. The narrower <code>video_histories.csv</code> is the handoff table for the next step: joining donated watch events to scraped or platform-provided metadata by <code>video_id</code>.</p>
+<div id="4d9bf36a" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>watch_histories_export.to_csv(WATCH_HISTORIES_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>video_histories.to_csv(VIDEO_HISTORIES_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>music_histories.to_csv(MUSIC_HISTORIES_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>ad_watch_histories.to_csv(AD_WATCH_HISTORIES_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>other_histories.to_csv(OTHER_HISTORIES_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>prefix_diagnostics.to_csv(TITLE_PREFIX_DIAGNOSTICS_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>saved_outputs <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"table"</span>: [</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"watch_histories"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"video_histories"</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"music_histories"</span>,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ad_watch_histories"</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"other_histories"</span>,</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"title_prefix_diagnostics"</span>,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"path"</span>: [</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>            WATCH_HISTORIES_PATH,</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>            VIDEO_HISTORIES_PATH,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>            MUSIC_HISTORIES_PATH,</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            AD_WATCH_HISTORIES_PATH,</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>            OTHER_HISTORIES_PATH,</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>            TITLE_PREFIX_DIAGNOSTICS_PATH,</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>saved_outputs[<span class="st">"path"</span>] <span class="op">=</span> saved_outputs[<span class="st">"path"</span>].<span class="bu">apply</span>(</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> output_path: output_path.relative_to(PROJECT_ROOT).as_posix()</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>saved_outputs</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">table</th>
+<th data-quarto-table-cell-role="th">path</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>watch_histories</td>
+<td>outputs/tables/watch_histories.csv</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>video_histories</td>
+<td>outputs/tables/video_histories.csv</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>music_histories</td>
+<td>outputs/tables/music_histories.csv</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>ad_watch_histories</td>
+<td>outputs/tables/ad_watch_histories.csv</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>other_histories</td>
+<td>outputs/tables/other_histories.csv</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>title_prefix_diagnostics</td>
+<td>outputs/tables/title_prefix_diagnostics.csv</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="result" class="level2">
+<h2 class="anchored" data-anchor-id="result">Result</h2>
+<p>The workflow now has both a full combined watch-history table and a validated video-watch table. The central join key for later enrichment is <code>video_id</code>, while the side tables and prefix diagnostics make the cleaning decisions auditable.</p>
+<section id="stored-table-previews" class="level3">
+<h3 class="anchored" data-anchor-id="stored-table-previews">Stored Table Previews</h3>
+<p>The cells below show the first five rows of each dataframe saved as a CSV. Empty previews are expected when the mock data do not contain that row type.</p>
+<div id="9a46da40" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>stored_watch_tables <span class="op">=</span> {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"watch_histories.csv"</span>: watch_histories_export,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"video_histories.csv"</span>: video_histories,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"music_histories.csv"</span>: music_histories,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ad_watch_histories.csv"</span>: ad_watch_histories,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"other_histories.csv"</span>: other_histories,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"title_prefix_diagnostics.csv"</span>: prefix_diagnostics,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_name, dataframe <span class="kw">in</span> stored_watch_tables.items():</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>file_name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(dataframe)<span class="sc">}</span><span class="ss"> rows)"</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    display(dataframe.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>watch_histories.csv (300 rows)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">header</th>
+<th data-quarto-table-cell-role="th">watch_row_type</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">title_without_watch_prefix</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">prefix_removed</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+<th data-quarto-table-cell-role="th">has_valid_video_id</th>
+<th data-quarto-table-cell-role="th">details_missing</th>
+<th data-quarto-table-cell-role="th">has_google_ads_marker</th>
+<th data-quarto-table-cell-role="th">is_youtube_music</th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+<th data-quarto-table-cell-role="th">details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alma</td>
+<td>2025-03-24 07:32:25.697000+00:00</td>
+<td>YouTube</td>
+<td>video_watch</td>
+<td>Watched Demo video 072</td>
+<td>Demo video 072</td>
+<td>Demo video 072</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000072</td>
+<td>VID00000072</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>Demo channel 051</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000051</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alma</td>
+<td>2025-03-13 13:53:45.738000+00:00</td>
+<td>YouTube</td>
+<td>video_watch</td>
+<td>Watched Demo video 213</td>
+<td>Demo video 213</td>
+<td>Demo video 213</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000213</td>
+<td>VID00000213</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>Demo channel 067</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000067</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Alma</td>
+<td>2025-02-04 21:01:38.803000+00:00</td>
+<td>YouTube</td>
+<td>video_watch</td>
+<td>Watched Demo video 051</td>
+<td>Demo video 051</td>
+<td>Demo video 051</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000051</td>
+<td>VID00000051</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>Demo channel 081</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000081</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Alma</td>
+<td>2025-01-30 11:00:54.583000+00:00</td>
+<td>YouTube</td>
+<td>video_watch</td>
+<td>Watched Demo video 122</td>
+<td>Demo video 122</td>
+<td>Demo video 122</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000122</td>
+<td>VID00000122</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>Demo channel 027</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000027</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Alma</td>
+<td>2024-12-13 07:07:08.189000+00:00</td>
+<td>YouTube</td>
+<td>video_watch</td>
+<td>Watched Demo video 157</td>
+<td>Demo video 157</td>
+<td>Demo video 157</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000157</td>
+<td>VID00000157</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>Demo channel 137</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000137</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>video_histories.csv (270 rows)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alma</td>
+<td>2025-03-24 07:32:25.697000+00:00</td>
+<td>Watched Demo video 072</td>
+<td>Demo video 072</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000072</td>
+<td>VID00000072</td>
+<td>Demo channel 051</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000051</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alma</td>
+<td>2025-03-13 13:53:45.738000+00:00</td>
+<td>Watched Demo video 213</td>
+<td>Demo video 213</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000213</td>
+<td>VID00000213</td>
+<td>Demo channel 067</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000067</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Alma</td>
+<td>2025-02-04 21:01:38.803000+00:00</td>
+<td>Watched Demo video 051</td>
+<td>Demo video 051</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000051</td>
+<td>VID00000051</td>
+<td>Demo channel 081</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000081</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Alma</td>
+<td>2025-01-30 11:00:54.583000+00:00</td>
+<td>Watched Demo video 122</td>
+<td>Demo video 122</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000122</td>
+<td>VID00000122</td>
+<td>Demo channel 027</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000027</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Alma</td>
+<td>2024-12-13 07:07:08.189000+00:00</td>
+<td>Watched Demo video 157</td>
+<td>Demo video 157</td>
+<td>Watched</td>
+<td>English</td>
+<td>https://www.youtube.com/watch?v=VID00000157</td>
+<td>VID00000157</td>
+<td>Demo channel 137</td>
+<td>https://www.youtube.com/channel/UCDEMOCHANNEL0...</td>
+<td>UCDEMOCHANNEL00000137</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>music_histories.csv (0 rows)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">header</th>
+<th data-quarto-table-cell-role="th">watch_row_type</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">title_without_watch_prefix</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">prefix_removed</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+<th data-quarto-table-cell-role="th">has_valid_video_id</th>
+<th data-quarto-table-cell-role="th">details_missing</th>
+<th data-quarto-table-cell-role="th">has_google_ads_marker</th>
+<th data-quarto-table-cell-role="th">is_youtube_music</th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+<th data-quarto-table-cell-role="th">details</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ad_watch_histories.csv (30 rows)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">header</th>
+<th data-quarto-table-cell-role="th">watch_row_type</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">title_without_watch_prefix</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">prefix_removed</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+<th data-quarto-table-cell-role="th">has_valid_video_id</th>
+<th data-quarto-table-cell-role="th">details_missing</th>
+<th data-quarto-table-cell-role="th">has_google_ads_marker</th>
+<th data-quarto-table-cell-role="th">is_youtube_music</th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+<th data-quarto-table-cell-role="th">details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Alma</td>
+<td>2024-11-19 07:03:16.172000+00:00</td>
+<td>YouTube</td>
+<td>ad_watch</td>
+<td>Watched Demo video 280</td>
+<td>Demo video 280</td>
+<td>Demo video 280</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000280</td>
+<td>VID00000280</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>[{'name': 'From Google Ads'}]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Alma</td>
+<td>2024-11-18 13:57:40.904000+00:00</td>
+<td>YouTube</td>
+<td>ad_watch</td>
+<td>Watched Demo video 209</td>
+<td>Demo video 209</td>
+<td>Demo video 209</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000209</td>
+<td>VID00000209</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>[{'name': 'From Google Ads'}]</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Alma</td>
+<td>2024-10-30 21:54:36.016000+00:00</td>
+<td>YouTube</td>
+<td>ad_watch</td>
+<td>Watched Demo video 302</td>
+<td>Demo video 302</td>
+<td>Demo video 302</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000302</td>
+<td>VID00000302</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>[{'name': 'From Google Ads'}]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Alma</td>
+<td>2024-08-27 11:34:16.527000+00:00</td>
+<td>YouTube</td>
+<td>ad_watch</td>
+<td>Watched Demo video 103</td>
+<td>Demo video 103</td>
+<td>Demo video 103</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000103</td>
+<td>VID00000103</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>[{'name': 'From Google Ads'}]</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Alma</td>
+<td>2024-08-13 13:44:28.283000+00:00</td>
+<td>YouTube</td>
+<td>ad_watch</td>
+<td>Watched Demo video 208</td>
+<td>Demo video 208</td>
+<td>Demo video 208</td>
+<td>Watched</td>
+<td>English</td>
+<td>True</td>
+<td>https://www.youtube.com/watch?v=VID00000208</td>
+<td>VID00000208</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>&lt;NA&gt;</td>
+<td>[{'name': 'From Google Ads'}]</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>other_histories.csv (0 rows)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Participant ID</th>
+<th data-quarto-table-cell-role="th">time</th>
+<th data-quarto-table-cell-role="th">header</th>
+<th data-quarto-table-cell-role="th">watch_row_type</th>
+<th data-quarto-table-cell-role="th">watched_title</th>
+<th data-quarto-table-cell-role="th">title_without_watch_prefix</th>
+<th data-quarto-table-cell-role="th">clean_title</th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">prefix_removed</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">video_id</th>
+<th data-quarto-table-cell-role="th">has_valid_video_id</th>
+<th data-quarto-table-cell-role="th">details_missing</th>
+<th data-quarto-table-cell-role="th">has_google_ads_marker</th>
+<th data-quarto-table-cell-role="th">is_youtube_music</th>
+<th data-quarto-table-cell-role="th">channel_title</th>
+<th data-quarto-table-cell-role="th">channel_url</th>
+<th data-quarto-table-cell-role="th">channel_id</th>
+<th data-quarto-table-cell-role="th">details</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>title_prefix_diagnostics.csv (1 rows)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">watch_action_prefix</th>
+<th data-quarto-table-cell-role="th">watch_action_language_hint</th>
+<th data-quarto-table-cell-role="th">rows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Watched</td>
+<td>English</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/2U2N/YouTube-donation-plus-dsa/blob/main/scripts/01_clean_donated_watch_data.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

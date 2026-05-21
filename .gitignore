@@ -1,0 +1,19 @@
+.DS_Store
+.quarto/
+_freeze/
+__pycache__/
+*.pyc
+*.docx
+
+# Temporary scrape artifacts
+outputs/subtitles_tmp/
+
+# Do not commit full scrape outputs with descriptions/subtitles.
+outputs/tables/meta_data.csv
+
+# Local notebooks/checkpoints
+.ipynb_checkpoints/
+
+
+/.quarto/
+**/*.quarto_ipynb

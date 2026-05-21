@@ -1,0 +1,68 @@
+message,classification,Critical
+"Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies",access management,N
+"Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies",access management,N
+ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N
+Video unavailable. This video is not available,unavailable,N
+Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y
+This video has been removed for violating YouTube's Community Guidelines,removed - community guidelines violated,Y
+This video has been removed for violating YouTube's Terms of Service,removed - ToS violated,Y
+"Failed to extract any player response; please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U",technical,N
+Video unavailable,unavailable,N
+This video has been removed for violating YouTube's policy on nudity or sexual content,removed - sex/nudity violation,Y
+This video has been removed for violating YouTube's policy on harassment and bullying,removed - bullying/harassment violation,Y
+Video unavailable. This video contains content from copyright owner(s) who have blocked it on copyright grounds,removed - copyright claim,Platform external legal action
+Video unavailable. This video is no longer available due to a copyright claim,removed - copyright claim,Platform external legal action
+Age-restricted video. Sign-in required,access management,N
+Video unavailable. This video has been removed by the uploader,uploader action: removed,N
+This live stream recording is not available.,uploader action: unavailable live-stream,N
+This video has been removed for violating YouTube's policy on repetitive or misleading metadata,removed - meta-data policy violation,Y
+The uploader has not made this video available in your country,uploader action: GEO-restriction,N
+Video unavailable. This video is no longer available because the uploader has closed their YouTube account.,uploader action: Account closed,N
+"Join this channel to get access to members-only content like this video, and other exclusive perks.",uploader action: Access management,N
+Video unavailable. The uploader has not made this video available.,uploader action: removed by uploader,N
+"This video has been removed for violating YouTube's policy on spam, deceptive practices, and scams",removed: spam/scam/deception violation,Y
+This video is not available.,unavailable,N
+Video unavailable. This video was removed due to a counterfeit claim,removed - counterfeit claim,Y
+Video unavailable. The YouTube account associated with this video has been terminated due to multiple third-party notifications of copyright infringement.,removed - account termination due to copyright violation,Platform external legal action
+Video unavailable. This video is no longer available due to a privacy claim by a third party,removed - privacy claim,Y
+Some sort of parse error,technical,N
+Members-only video,uploader action: Access management,N
+Requested format is not available. Use --list-formats for a list of available formats,technical,N
+Unable to download subtitles,technical,N
+This video has been removed for violating YouTube's policy on hate speech. Learn more about combating hate speech in your country.,removed - hate speech claim,Y
+This video has been removed for violating YouTube's policy on violent or graphic content,removed - violence violation,Y
+Missing video: Not processed. May be movie; if so ID of the trailer has been stored instead,technical,N
+Video unavailable. This video is not available in your country,Geo-restriction,N
+This video is unavailable,unavailable,N
+Video unavailable. This video is unavailable,unavailable,N
+This video requires payment to watch,access management,N
+Video unavailable. This video is no longer available due to a trademark claim by a third party,removed - trademark claim,Platform external legal action
+This video is not available in your country,Geo-restriction,N
+Video unavailable. This video is a duplicate of another YouTube video,removed / duplicate,N
+ERROR: Unable to download video subtitles for 'en': [Errno 13] Permission denied: 'subtitles\\video_id.en.vtt.ytdl',technical,N
+Video unavailable. This video was removed due to a legal complaint,removed - legal complaint,Platform external legal action
+Video unavailable. This video is not available in your country due to a copyright claim,geo-restriction,N
+Video unavailable in your country.,geo-restriction,N
+Offline.,technical,N
+This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y
+Video unavailable. This video has been removed due to a contractual obligation with a music licensor.,removed - contractual obligation with licensor,Platform external legal action
+We're processing this video. Check back later.,technical,N
+Video unavailable. This content is not available on this country domain due to a legal complaint.,geo-restriction,Platform external legal action
+Video unavailable. This video is not available on this country domain due to a copyright claim,geo-restriction,Platform external legal action
+Video unavailable. This content is not available on this country domain due to a defamation complaint.,geo-restriction,Platform external legal action
+Video unavailable. This content is not available on this country domain.,geo-restriction,N
+Video unavailable. This content is not available in your country due to a legal complaint.,geo-restriction,Platform external legal action
+Video unavailable. This content is not available in your country due to a privacy complaint,geo-restriction,Y
+This live stream has been terminated due to use of 3rd party audio or video content.,removed - copyright claim,Platform external legal action
+Video unavailable. This content is not available on this country domain due to a legal complaint from the government.,geo-restriction - legal complaint (from government,Platform external legal action
+Video unavailable. This video contains content from creator. It is not available.,unavailable,N
+"sequence item 52: expected str instance, NoneType found",technical,N
+We're experiencing technical difficulties.,technical,N
+This video has been removed by the uploader,uploader action: removed by uploader,N
+Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated due to multiple or severe violations of YouTube's Copyright Policy.,removed - account termination due to copyright violation,Platform external legal action
+"This video is private. If the owner of this video has granted you access, please sign in. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies",access management,N
+Video unavailable. This content is not available on this country domain due to a legal complaint by International Federation of the Phonographic Industry .,geo-restriction,Platform external legal action
+"This video contains content from Fremantle International, who has blocked it on copyright grounds",removed - copyright claim,Platform external legal action
+This video is DRM protected,removed - DRM protection,Platform external legal action
+Video unavailable. This course video is not available yet in your country. Learn more,geo-restriction,N
+Video unavailable. This content is not available on this country domain due to a legal complaint by IFPI Represented Companies.,geo-restriction,Platform external legal action

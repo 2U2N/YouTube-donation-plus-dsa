@@ -1,0 +1,256 @@
+video_id,raw_error,generalized_error_msg,category,critical,assessment_label,is_problematic
+VID00000001,,No error,No error,,No error,False
+VID00000002,,No error,No error,,No error,False
+VID00000003,,No error,No error,,No error,False
+VID00000004,,No error,No error,,No error,False
+VID00000005,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000006,,No error,No error,,No error,False
+VID00000007,,No error,No error,,No error,False
+VID00000009,ERROR: [youtube] VID00000009: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000010,,No error,No error,,No error,False
+VID00000011,ERROR: [youtube] VID00000011: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,access management,N,Not problematic,False
+VID00000012,,No error,No error,,No error,False
+VID00000013,,No error,No error,,No error,False
+VID00000014,ERROR: [youtube] VID00000014: This video has been removed for violating YouTube's Community Guidelines,This video has been removed for violating YouTube's Community Guidelines,removed - community guidelines violated,Y,Problematic,True
+VID00000015,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000016,,No error,No error,,No error,False
+VID00000017,,No error,No error,,No error,False
+VID00000018,,No error,No error,,No error,False
+VID00000019,,No error,No error,,No error,False
+VID00000020,,No error,No error,,No error,False
+VID00000021,,No error,No error,,No error,False
+VID00000022,,No error,No error,,No error,False
+VID00000023,,No error,No error,,No error,False
+VID00000024,,No error,No error,,No error,False
+VID00000027,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000028,ERROR: [youtube] VID00000028: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000029,ERROR: [youtube] VID00000029: Video unavailable. This video is no longer available due to a copyright claim by Hueber Verlag GmbH & Co. KG,Video unavailable. This video is no longer available due to a copyright claim,removed - copyright claim,Platform external legal action,Removed due to external legal rights,False
+VID00000030,,No error,No error,,No error,False
+VID00000031,,No error,No error,,No error,False
+VID00000032,,No error,No error,,No error,False
+VID00000033,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000035,ERROR: [youtube] VID00000035: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,access management,N,Not problematic,False
+VID00000036,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000037,,No error,No error,,No error,False
+VID00000038,,No error,No error,,No error,False
+VID00000040,,No error,No error,,No error,False
+VID00000041,ERROR: [youtube] VID00000041: Video unavailable. This video is no longer available due to a copyright claim by Vipassana Research Institute,Video unavailable. This video is no longer available due to a copyright claim,removed - copyright claim,Platform external legal action,Removed due to external legal rights,False
+VID00000042,,No error,No error,,No error,False
+VID00000043,,No error,No error,,No error,False
+VID00000044,,No error,No error,,No error,False
+VID00000046,,No error,No error,,No error,False
+VID00000048,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000049,,No error,No error,,No error,False
+VID00000050,,No error,No error,,No error,False
+VID00000051,,No error,No error,,No error,False
+VID00000052,,No error,No error,,No error,False
+VID00000053,"ERROR: [youtube] VID00000053: Video unavailable. This video contains content from WMG, who has blocked it in your country on copyright grounds",Video unavailable. This video contains content from copyright owner(s) who have blocked it on copyright grounds,removed - copyright claim,Platform external legal action,Removed due to external legal rights,False
+VID00000055,,No error,No error,,No error,False
+VID00000056,,No error,No error,,No error,False
+VID00000057,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000059,,No error,No error,,No error,False
+VID00000060,,No error,No error,,No error,False
+VID00000062,,No error,No error,,No error,False
+VID00000063,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000065,ERROR: [youtube] VID00000065: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000067,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000070,,No error,No error,,No error,False
+VID00000072,,No error,No error,,No error,False
+VID00000073,,No error,No error,,No error,False
+VID00000074,,No error,No error,,No error,False
+VID00000075,,No error,No error,,No error,False
+VID00000076,,No error,No error,,No error,False
+VID00000077,,No error,No error,,No error,False
+VID00000078,ERROR: [youtube] VID00000078: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000079,,No error,No error,,No error,False
+VID00000080,,No error,No error,,No error,False
+VID00000082,ERROR: [youtube] VID00000082: Video unavailable,Video unavailable,unavailable,N,Not problematic,False
+VID00000083,,No error,No error,,No error,False
+VID00000084,"ERROR: [youtube] VID00000084: Video unavailable. This video contains content from WMG, who has blocked it on copyright grounds",Video unavailable. This video contains content from copyright owner(s) who have blocked it on copyright grounds,removed - copyright claim,Platform external legal action,Removed due to external legal rights,False
+VID00000085,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000086,ERROR: [youtube] VID00000086: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,access management,N,Not problematic,False
+VID00000087,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000088,,No error,No error,,No error,False
+VID00000089,,No error,No error,,No error,False
+VID00000090,ERROR: [youtube] VID00000090: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,access management,N,Not problematic,False
+VID00000091,,No error,No error,,No error,False
+VID00000092,,No error,No error,,No error,False
+VID00000093,,No error,No error,,No error,False
+VID00000094,,No error,No error,,No error,False
+VID00000095,,No error,No error,,No error,False
+VID00000096,ERROR: [youtube] VID00000096: This video has been removed for violating YouTube's Community Guidelines,This video has been removed for violating YouTube's Community Guidelines,removed - community guidelines violated,Y,Problematic,True
+VID00000097,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000099,,No error,No error,,No error,False
+VID00000100,,No error,No error,,No error,False
+VID00000101,,No error,No error,,No error,False
+VID00000102,,No error,No error,,No error,False
+VID00000104,,No error,No error,,No error,False
+VID00000105,,No error,No error,,No error,False
+VID00000106,,No error,No error,,No error,False
+VID00000108,ERROR: [youtube] VID00000108: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000110,,No error,No error,,No error,False
+VID00000111,,No error,No error,,No error,False
+VID00000112,"ERROR: [youtube] VID00000112: Video unavailable. This video contains content from Disney Enterprises, who has blocked it on copyright grounds",Video unavailable. This video contains content from copyright owner(s) who have blocked it on copyright grounds,removed - copyright claim,Platform external legal action,Removed due to external legal rights,False
+VID00000113,,No error,No error,,No error,False
+VID00000114,,No error,No error,,No error,False
+VID00000115,,No error,No error,,No error,False
+VID00000116,ERROR: [youtube] VID00000116: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,access management,N,Not problematic,False
+VID00000117,,No error,No error,,No error,False
+VID00000119,,No error,No error,,No error,False
+VID00000122,,No error,No error,,No error,False
+VID00000123,,No error,No error,,No error,False
+VID00000124,ERROR: [youtube] VID00000124: This video is not available,Video unavailable. This video is not available,unavailable,N,Not problematic,False
+VID00000125,,No error,No error,,No error,False
+VID00000126,,No error,No error,,No error,False
+VID00000127,,No error,No error,,No error,False
+VID00000128,,No error,No error,,No error,False
+VID00000129,,No error,No error,,No error,False
+VID00000130,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000132,,No error,No error,,No error,False
+VID00000133,,No error,No error,,No error,False
+VID00000134,,No error,No error,,No error,False
+VID00000135,,No error,No error,,No error,False
+VID00000137,,No error,No error,,No error,False
+VID00000138,,No error,No error,,No error,False
+VID00000139,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000141,,No error,No error,,No error,False
+VID00000142,,No error,No error,,No error,False
+VID00000143,,No error,No error,,No error,False
+VID00000144,,No error,No error,,No error,False
+VID00000146,,No error,No error,,No error,False
+VID00000147,,No error,No error,,No error,False
+VID00000148,,No error,No error,,No error,False
+VID00000149,,No error,No error,,No error,False
+VID00000150,,No error,No error,,No error,False
+VID00000151,,No error,No error,,No error,False
+VID00000152,,No error,No error,,No error,False
+VID00000154,,No error,No error,,No error,False
+VID00000155,,No error,No error,,No error,False
+VID00000156,,No error,No error,,No error,False
+VID00000157,,No error,No error,,No error,False
+VID00000158,,No error,No error,,No error,False
+VID00000159,,No error,No error,,No error,False
+VID00000160,,No error,No error,,No error,False
+VID00000161,ERROR: [youtube] VID00000161: Video unavailable,Video unavailable,unavailable,N,Not problematic,False
+VID00000162,,No error,No error,,No error,False
+VID00000163,,No error,No error,,No error,False
+VID00000164,,No error,No error,,No error,False
+VID00000165,,No error,No error,,No error,False
+VID00000166,ERROR: [youtube] VID00000166: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000167,,No error,No error,,No error,False
+VID00000169,,No error,No error,,No error,False
+VID00000170,,No error,No error,,No error,False
+VID00000172,,No error,No error,,No error,False
+VID00000174,,No error,No error,,No error,False
+VID00000175,,No error,No error,,No error,False
+VID00000177,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000179,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000180,,No error,No error,,No error,False
+VID00000182,,No error,No error,,No error,False
+VID00000183,,No error,No error,,No error,False
+VID00000184,,No error,No error,,No error,False
+VID00000185,,No error,No error,,No error,False
+VID00000186,,No error,No error,,No error,False
+VID00000187,,No error,No error,,No error,False
+VID00000189,,No error,No error,,No error,False
+VID00000190,,No error,No error,,No error,False
+VID00000191,,No error,No error,,No error,False
+VID00000192,,No error,No error,,No error,False
+VID00000193,,No error,No error,,No error,False
+VID00000194,,No error,No error,,No error,False
+VID00000195,,No error,No error,,No error,False
+VID00000196,,No error,No error,,No error,False
+VID00000197,,No error,No error,,No error,False
+VID00000199,,No error,No error,,No error,False
+VID00000201,,No error,No error,,No error,False
+VID00000202,,No error,No error,,No error,False
+VID00000203,,No error,No error,,No error,False
+VID00000204,,No error,No error,,No error,False
+VID00000206,,No error,No error,,No error,False
+VID00000207,,No error,No error,,No error,False
+VID00000211,,No error,No error,,No error,False
+VID00000212,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000213,,No error,No error,,No error,False
+VID00000214,,No error,No error,,No error,False
+VID00000215,,No error,No error,,No error,False
+VID00000217,,No error,No error,,No error,False
+VID00000219,,No error,No error,,No error,False
+VID00000220,ERROR: [youtube] VID00000220: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000221,,No error,No error,,No error,False
+VID00000223,,No error,No error,,No error,False
+VID00000224,,No error,No error,,No error,False
+VID00000225,,No error,No error,,No error,False
+VID00000226,,No error,No error,,No error,False
+VID00000227,,No error,No error,,No error,False
+VID00000228,,No error,No error,,No error,False
+VID00000229,,No error,No error,,No error,False
+VID00000230,,No error,No error,,No error,False
+VID00000231,,No error,No error,,No error,False
+VID00000232,ERROR: [youtube] VID00000232: Video unavailable,Video unavailable,unavailable,N,Not problematic,False
+VID00000233,,No error,No error,,No error,False
+VID00000235,,No error,No error,,No error,False
+VID00000236,ERROR: [youtube] VID00000236: Video unavailable,Video unavailable,unavailable,N,Not problematic,False
+VID00000237,,No error,No error,,No error,False
+VID00000239,ERROR: [youtube] VID00000239: Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,Video unavailable. This video is no longer available because the YouTube account associated with this video has been terminated.,removed - account terminated,Y,Problematic,True
+VID00000240,,No error,No error,,No error,False
+VID00000241,,No error,No error,,No error,False
+VID00000242,,No error,No error,,No error,False
+VID00000243,,No error,No error,,No error,False
+VID00000244,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000245,,No error,No error,,No error,False
+VID00000246,"ERROR: [youtube] VID00000246: Video unavailable. This video contains content from SME, who has blocked it in your country on copyright grounds",Video unavailable. This video contains content from copyright owner(s) who have blocked it on copyright grounds,removed - copyright claim,Platform external legal action,Removed due to external legal rights,False
+VID00000247,,No error,No error,,No error,False
+VID00000248,ERROR: [youtube] VID00000248: Video unavailable,Video unavailable,unavailable,N,Not problematic,False
+VID00000249,,No error,No error,,No error,False
+VID00000250,,No error,No error,,No error,False
+VID00000251,,No error,No error,,No error,False
+VID00000252,,No error,No error,,No error,False
+VID00000253,ERROR: [youtube] VID00000253: This video is not available,Video unavailable. This video is not available,unavailable,N,Not problematic,False
+VID00000254,,No error,No error,,No error,False
+VID00000255,,No error,No error,,No error,False
+VID00000256,,No error,No error,,No error,False
+VID00000257,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000258,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000259,,No error,No error,,No error,False
+VID00000260,,No error,No error,,No error,False
+VID00000261,,No error,No error,,No error,False
+VID00000262,,No error,No error,,No error,False
+VID00000263,,No error,No error,,No error,False
+VID00000264,,No error,No error,,No error,False
+VID00000265,,No error,No error,,No error,False
+VID00000267,,No error,No error,,No error,False
+VID00000270,,No error,No error,,No error,False
+VID00000271,,No error,No error,,No error,False
+VID00000272,,No error,No error,,No error,False
+VID00000274,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000276,,No error,No error,,No error,False
+VID00000277,,No error,No error,,No error,False
+VID00000278,,No error,No error,,No error,False
+VID00000279,,No error,No error,,No error,False
+VID00000282,,No error,No error,,No error,False
+VID00000283,,No error,No error,,No error,False
+VID00000284,,No error,No error,,No error,False
+VID00000285,,No error,No error,,No error,False
+VID00000286,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000287,,No error,No error,,No error,False
+VID00000288,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False
+VID00000289,,No error,No error,,No error,False
+VID00000290,ERROR: [youtube] VID00000290: Video unavailable,Video unavailable,unavailable,N,Not problematic,False
+VID00000291,,No error,No error,,No error,False
+VID00000292,,No error,No error,,No error,False
+VID00000293,,No error,No error,,No error,False
+VID00000295,,No error,No error,,No error,False
+VID00000296,,No error,No error,,No error,False
+VID00000297,,No error,No error,,No error,False
+VID00000298,,No error,No error,,No error,False
+VID00000299,ERROR: [youtube] VID00000299: Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,Private video. Sign in if you've been granted access to this video. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies,access management,N,Not problematic,False
+VID00000300,,No error,No error,,No error,False
+VID00000303,,No error,No error,,No error,False
+VID00000304,,No error,No error,,No error,False
+VID00000305,,No error,No error,,No error,False
+VID00000306,,No error,No error,,No error,False
+VID00000307,,No error,No error,,No error,False
+VID00000308,,No error,No error,,No error,False
+VID00000309,,No error,No error,,No error,False
+VID00000311,,No error,No error,,No error,False
+VID00000313,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,ERROR: Unable to download video subtitles for 'en': HTTP Error 429: Too Many Requests,access management,N,Not problematic,False

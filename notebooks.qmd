@@ -1,0 +1,36 @@
+---
+title: "Notebook Guide"
+---
+
+The notebooks are designed as a teaching pipeline. They are intentionally lean and annotated so readers can see what each step contributes.
+
+## 01 Clean Donated Watch Data
+
+[Open notebook 01](scripts/01_clean_donated_watch_data.html)
+
+Reads mock Takeout watch-history JSON files, identifies valid YouTube watch rows, handles ads and details fields, extracts `video_id`, cleans multilingual title prefixes, and writes cleaned watch tables.
+
+## 02 Clean Donated Search Data
+
+[Open notebook 02](scripts/02_clean_donated_search_data.html)
+
+Reads mock Takeout search-history JSON files, identifies genuine search-query rows with multilingual action-prefix logic, decodes search queries from URLs, and writes search-history tables.
+
+## 03 Scrape YouTube Metadata
+
+[Open notebook 03](scripts/03_scrape_youtube_metadata.html)
+
+Shows how to collect video-level metadata with `yt_dlp`. This notebook is documented but not executed in the public site because a real run requires authorization and a registered identifying User-Agent token.
+
+## 04 Link Watch Data, Metadata, And Exposure Context
+
+[Open notebook 04](scripts/04_link_watch_metadata.html)
+
+Joins cleaned watch events to video metadata and adds event-level search-associated, subscribed-channel, Shorts/Longs, day/night, and problematic-view labels.
+
+## 05 Demonstrate Enriched Exposure Measures
+
+[Open notebook 05](scripts/05_demonstrate_enriched_exposure_measures.html)
+
+The showcase notebook. It displays selected enriched watch events and creates figures demonstrating pathway mix, participant-level indicator shares, day/night by format, and problematic/unavailable-view signals.
+

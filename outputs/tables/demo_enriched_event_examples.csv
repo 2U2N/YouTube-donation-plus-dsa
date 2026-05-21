@@ -1,0 +1,7 @@
+showcase_reason,participant_id,watch_local_time,clean_title,url,metadata_title,channel,duration_minutes,view_count,searched,subscribed,video_format,time_period,metadata_status,generalized_error_msg,problematic_assessment_label
+Search-associated watch,Alma,2025-03-13 14:53:45.738000+01:00,Demo video 213,https://www.youtube.com/watch?v=VID00000213,Demo video 213,Demo channel 067,50.1,"213,248",Yes,Yes,Longs,Day,ok,No error,No error
+Subscribed-channel watch,Alma,2025-03-24 08:32:25.697000+01:00,Demo video 072,https://www.youtube.com/watch?v=VID00000072,Demo video 072,Demo channel 051,39.2,"71,338",No,Yes,Longs,Day,ok,No error,No error
+Shorts watch,Alma,2024-10-30 22:54:50.417000+01:00,Demo video 018,https://www.youtube.com/watch?v=VID00000018,Demo video 018,Demo channel 023,0.8,"21,978",No,Yes,Shorts,Day,ok,No error,No error
+Nighttime watch,Alma,2019-01-26 03:20:46.805000+01:00,Demo video 151,https://www.youtube.com/watch?v=VID00000151,Demo video 151,Demo channel 020,20.5,"154,016",No,No,Longs,Night,ok,No error,No error
+Problematic/unavailable signal,Alma,2022-06-03 11:43:18.227000+02:00,Demo video 014,https://www.youtube.com/watch?v=VID00000014,,,,,No,Unknown,Longs,Day,error,This video has been removed for violating YouTube's Community Guidelines,Problematic
+Neither search nor subscription,Alma,2024-08-15 16:00:23.414000+02:00,Demo video 191,https://www.youtube.com/watch?v=VID00000191,Demo video 191,Demo channel 109,40.2,"193,504",No,No,Longs,Day,ok,No error,No error
