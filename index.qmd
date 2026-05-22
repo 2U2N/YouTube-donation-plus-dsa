@@ -1,6 +1,5 @@
 ---
 title: "Enhancing YouTube Data Donations With Platform Metadata"
-subtitle: "A reproducible demonstration of enriched YouTube exposure histories"
 ---
 
 This repository demonstrates how donated YouTube account data can be linked with video- and channel-level platform metadata to create **enriched exposure histories**.
