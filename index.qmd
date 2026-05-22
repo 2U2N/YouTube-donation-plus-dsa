@@ -1,72 +1,117 @@
 ---
 title: "Enhancing YouTube Data Donations With Platform Metadata"
+subtitle: "A reproducible demonstration of enriched YouTube exposure histories"
 ---
 
-This project demonstrates how donated YouTube watch histories can be linked with video-level platform metadata to create enriched exposure histories.
+This repository demonstrates how donated YouTube account data can be linked with video- and channel-level platform metadata to create **enriched exposure histories**.
 
-The workflow combines mock Google Takeout-style data with a metadata table in order to show what researchers can learn once watch events, search histories, subscriptions, metadata, and availability signals are joined around the YouTube `video_id`.
+The project accompanies the method described in *Enhancing YouTube Data Donations With Platform Metadata*. It shows, in reproducible form, how researchers can move from raw Google Takeout-style files, as obtained via data donations, to event-level indicators of YouTube exposure: what was watched, when it was watched, estimated watch time, whether it followed a search, whether it came from a subscribed channel, whether it was a Short or Long, and whether later metadata collection suggests that a video became unavailable for potentially problematic content-related reasons. For demonstration purposes this repository uses **synthetic mock data**.
 
-## What This Adds
+## Purpose
 
-Raw watch histories tell us that a participant started watching a video at a particular time. After enrichment, the same watch event can also carry:
+YouTube watch histories are valuable for media, journalism and platform research because they record concrete viewing behavior over time rather than recall and report biased self-reports, aggregate platform metrics, or metadata by themselves. On their own, however, donated watch histories are sparse.
 
-- video duration, channel, popularity fields, format, and availability status;
-- whether the watch closely followed a donated YouTube search;
-- whether the video came from a donated subscribed channel;
-- whether the event was a Short or Long;
-- whether the event happened during the configured day or night period;
-- whether later metadata errors indicate an unavailable or problematic-view signal.
+This project shows how those traces can be enriched by joining them with video-level metadata through the YouTube `video_id`. After enrichment, each watch event can be analyzed not only as a timestamped view, but as part of a wider exposure history containing information about video format, channel context, likely viewing pathway, availability status, and time of day. In aggregate this allows inference not only on when but also on how data donors used the platform and provides additional information on what the people encountered.
+
+The workflow is meant for researchers who want to understand or adapt a data donation pipeline for YouTube-related research, especially in journalism studies, platform accountability research, computational social science, and media-use research.
+
+## What This Repository Demonstrates
+
+The repository shows how to:
+
+- clean donated YouTube watch, search, and subscription files;
+- extract and standardize YouTube `video_id`s across donated files;
+- prepare a video-level metadata table;
+- join donated histories and metadata at the event level;
+- classify watches as search-associated or subscription-linked where possible;
+- distinguish Shorts from Longs using metadata-derived rules;
+- classify viewing as daytime or nighttime according to a configurable time window;
+- estimate watch time from metadata duration and the next observed watch event;
+- attach availability and problematic-view indicators based on metadata/error signals;
+
+The goal is not to reconstruct every individual viewing decision. YouTube does not provide authoritative explanations for why a specific video appeared in a user's history and we have no access to what a given video meant to a given viewer at time of viewing. However, the workflow produces **aggregate exposure indicators** that allow insight into how YouTube use differs across users.
+
+## What Enrichment Adds
+
+A raw watch-history row tells us that a participant started watching a video at a particular time. After enrichment, the same row can also include:
+
+- video duration;
+- channel and channel identifier;
+- upload date;
+- estimated watch time;
+- view, like, and comment metadata;
+- language, format, aspect ratio, and other video-level fields;
+- whether the video is classified as a Short or Long;
+- whether the watch happened during the configured day or night period;
+- indication of whether the watch followed an explicit search;
+- indication of whether the video came from a channel the user is subscribed to;
+- whether a watched video was later removed by YouTube;
+- whether the removal was due to potentially problematic content of the video
+
+These data can then be used for user-level assessments like:
+
+- share of searched or subscribed watches among all watches
+- estimated watch time across participants, formats, and routines
+- distribution of Shorts/Longs across day/night watches
+- frequency of encountering potentially problematic content
+
+These indicators are imperfect but useful. They are strongest when used to describe patterns across many events or participants, rather than to make definitive claims about single views. The figures below exemplify how the data can be used to quantify YouTube usage and identify differences between individual data donors. These examples are illustrative outputs from the synthetic mock data.
+
+::: {layout-ncol="2"}
+![Search and subscription context make it possible to distinguish whether watches followed explicit searches, came from subscribed channels, both, or neither.](outputs/figures/demo_pathway_mix.png)
+
+![The enriched event table allows participant-level comparison across searched, subscribed, Shorts, nighttime, and problematic-view indicators.](outputs/figures/demo_participant_measure_shares.png)
+
+![Metadata-derived format labels and localized timestamps allow analyses of Shorts/Longs across day and night watching.](outputs/figures/demo_daynight_shorts.png)
+
+![Scraped metadata errors and manual classifications make unavailable or potentially problematic watched videos analyzable at the event level.](outputs/figures/demo_problematic_views.png)
+:::
 
 ## Workflow
 
 ```{mermaid}
 flowchart TD
-  A["Mock Google Takeout data<br/>watch, search, subscriptions"] --> B["Clean donated histories"]
-  C["YouTube metadata<br/>yt-dlp or demo fixture"] --> D["Video-level metadata table"]
-  B --> E["Event-level enriched watch table"]
+  A["Mock Google Takeout-style data<br/>watch histories, search histories, subscriptions"] --> B["Clean donated histories"]
+  C["Video-level metadata<br/>scraped metadata or public demo fixture"] --> D["Prepare metadata table"]
+  B --> E["Join by YouTube video_id"]
   D --> E
-  E --> F["Search, subscription,<br/>Shorts/Longs, day/night,<br/>problematic-view indicators"]
-  F --> G["Showcase tables and figures"]
+  E --> F["Event-level enriched watch history"]
+  F --> G["Estimate watch time<br/>from duration and next observed watch"]
+  F --> H["Compute exposure indicators<br/>search, subscriptions, Shorts/Longs, day/night, availability"]
+  G --> I["Showcase tables and figures"]
+  H --> I
 ```
 
 ## Recommended Entry Point
 
-Start with [Notebook 05](scripts/05_demonstrate_enriched_exposure_measures.html). It shows what the enriched data looks like and produces compact figures that demonstrate the article-facing value of the method.
+For a quick overview of the finished workflow, start with:
 
-Then use [the notebook guide](notebooks.html) to inspect the earlier cleaning, scraping, and linking steps.
+[Notebook 06: Demonstrate enriched exposure measures](scripts/06_demonstrate_enriched_exposure_measures.html)
+
+This notebook shows the final enriched data structure and produces compact figures that illustrate what the method makes visible.
+
+Then use the [notebook guide](notebooks.html) to inspect the earlier steps in order: cleaning donated histories, preparing metadata, demonstrating scraping logic, linking records, estimating watch time, and producing the final exposure measures.
 
 ## Mock Data
 
-The repository contains scrambled mock Google Takeout-style data in `data/mock_takeout`.
+The mock dataset contains three fictional donors: Alma, Beata, Carmen. Each donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic. Video IDs, titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values.
 
-The mock data include three fictional donors:
+## Legalities of Metadata Collection
 
-- Alma
-- Beata
-- Carmen
+[Notebook 03](scripts/03_scrape_youtube_metadata.html) demonstrates the metadata collection logic used in the method. In a real research project, metadata collection requires careful legal, ethical, and institutional assessment. It may also depend on the researcher's access rights, data security setup, and platform access conditions.
 
-Each donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic: video IDs, video titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values.
+One route to obtain research access to YouTube is the Digital Services Act Article 40(12) for research with a systemic risk focus. Access can be requested via this [request records form](https://requestrecords.google.com/researcher) and requires provision of the scraper's IP and a *product token string* for authentication. Researchers with access can make themselves identifiable to YouTube by using their product token string as `IDENTIFYING_USER_AGENT` when scraping.
 
-Included public data:
+An example of a successful data access request can be found [here](https://github.com/2U2N/GRPA_YT/blob/main/GRPA_Share_Copy.pdf).
 
-- `data/mock_takeout/`: mock donor files.
-- `data/manual/unavailable_content_classification_filled.csv`: manual classification map for generalized availability/error messages.
-- `data/demo_metadata/meta_data_public.csv`: scrambled video metadata fixture used for offline reproduction.
-
-The public repository does not include real participant donations, private source Takeout exports, exploratory legacy notebooks, full scraped metadata with subtitle text or long descriptions, real YouTube video/channel identifiers, or temporary subtitle files.
-
-Notebook 03 demonstrates the scraping procedure, but public readers should not need to scrape YouTube to understand the method. The scrambled metadata fixture allows notebook 04 and notebook 05 to run offline while preserving the shape of the original metadata workflow. The fake public video IDs are not intended to be scrapeable.
-
-## Preview Figures
-
-![](outputs/figures/demo_pathway_mix.png)
-
-![](outputs/figures/demo_participant_measure_shares.png)
-
-![](outputs/figures/demo_daynight_shorts.png)
-
-![](outputs/figures/demo_problematic_views.png)
+For further support in requesting data access under Article 40 of the Digital Services Act (DSA), the [DSA Collaboratory](https://dsa40collaboratory.eu/) is highly recommended.
 
 ## Repository
 
 The source repository is available at <https://github.com/2U2N/YouTube-donation-plus-dsa>.
+
+## Authorship and Responsibility
+
+I, [David Wegmann](https://2u2n.github.io/Website_David_Wegmann/), developed this data enrichment workflow and this website as part of my PhD studies in the DFF-funded [Social Media Influence](https://datalab.au.dk/projects/social-media-influence) project at [DATALAB](https://datalab.au.dk), Aarhus University. Marcus Olesen, Andreas Hyldegaard and Ulrich Karstoft have contributed immensely to the development of data scraping and parsing scripts.
+
+YouTube data is not produced for research purposes, and interpreting scraped platform data often requires substantial (informed) guesswork. The results should therefore be treated with caution, and the interpretations offered here should not be understood as definitive. Donated and scraped data must be handled responsibly, as both may contain deeply personal traces of people’s lives, including traces created without any awareness that they could later become research data.

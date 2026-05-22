@@ -1,36 +1,264 @@
 ---
 title: "Notebook Guide"
+subtitle: "A six-step teaching pipeline for enriched YouTube exposure histories"
 ---
 
-The notebooks are designed as a teaching pipeline. They are intentionally lean and annotated so readers can see what each step contributes.
+The notebooks in this repository are designed as a teaching pipeline. They show how donated YouTube account data can be cleaned, linked to platform metadata, and transformed into event-level exposure indicators.
+
+The public version uses mock Google Takeout-style data and a scrambled metadata fixture. This means readers can inspect and reproduce the workflow without access to private participant donations or real YouTube identifiers.
+
+## Recommended Reading Paths
+
+There are two useful ways to read the notebooks.
+
+If you want the **quickest sense of what the method produces**, start with [Notebook 06](scripts/06_demonstrate_enriched_exposure_measures.html). It shows the enriched event table and the final demonstration figures.
+
+If you want to understand the **full workflow**, read the notebooks in order:
+
+1.  clean donated watch histories;
+2.  clean donated search histories;
+3.  document metadata collection;
+4.  link watch events, metadata, subscriptions, searches, and availability signals;
+5.  estimate watch time from metadata duration and the next observed watch event;
+6.  summarize the enriched exposure measures.
+
+## Pipeline Overview
+
+```{mermaid}
+flowchart TD
+  A["01 Clean donated watch histories"] --> B["video_histories.csv"]
+  C["02 Clean donated search histories"] --> D["search_query_histories.csv"]
+  B --> E["03 Scrape or provide video metadata"]
+  E --> F["meta_data.csv or public metadata fixture"]
+  B --> G["04 Link watch events, metadata, and exposure context"]
+  D --> G
+  F --> G
+  H["Donated subscriptions"] --> G
+  I["Manual availability/error classification"] --> G
+  G --> J["video_histories_enriched.csv"]
+  J --> K["05 Estimate watch time"]
+  K --> L["video_histories_watchtime.csv"]
+  L --> M["06 Demonstrate enriched exposure measures"]
+  M --> N["Demo tables and figures"]
+```
+
+## Notebook Summary
+
+| Notebook | Main role | Main output |
+|------------------------|------------------------|------------------------|
+| [01 Clean Donated Watch Data](scripts/01_clean_donated_watch_data.html) | Turns raw Takeout-style watch histories into validated video-watch events. | `outputs/tables/video_histories.csv` |
+| [02 Clean Donated Search Data](scripts/02_clean_donated_search_data.html) | Turns raw Takeout-style search histories into genuine YouTube search-query events. | `outputs/tables/search_query_histories.csv` |
+| [03 Scrape YouTube Metadata](scripts/03_scrape_youtube_metadata.html) | Documents how video-level metadata can be collected with `yt_dlp`. | `outputs/tables/meta_data.csv` |
+| [04 Link Watch Data, Metadata, And Exposure Context](scripts/04_link_watch_metadata.html) | Joins watch events with metadata, search, subscription, time-of-day, format, and availability indicators. | `outputs/tables/video_histories_enriched.csv` |
+| [05 Estimate Watch Time](scripts/05_estimate_watchtime.html) | Estimates event-level watch time from metadata duration and the next observed watch event. | `outputs/tables/video_histories_watchtime.csv` |
+| [06 Demonstrate Enriched Exposure Measures](scripts/06_demonstrate_enriched_exposure_measures.html) | Shows what the enriched data makes visible and produces demonstration figures. | Demo tables and figures in `outputs/` |
 
 ## 01 Clean Donated Watch Data
 
 [Open notebook 01](scripts/01_clean_donated_watch_data.html)
 
-Reads mock Takeout watch-history JSON files, identifies valid YouTube watch rows, handles ads and details fields, extracts `video_id`, cleans multilingual title prefixes, and writes cleaned watch tables.
+This notebook is the first cleaning step. It reads mock Google Takeout-style YouTube watch-history files from `data/mock_takeout`, combines donor files, standardizes columns, parses timestamps, extracts YouTube `video_id`s, and separates validated video watches from ads, YouTube Music rows, and other non-video rows.
+
+It also cleans multilingual watch-action prefixes so that titles can be interpreted more consistently across Takeout exports.
+
+The main handoff is:
+
+- `outputs/tables/video_histories.csv`
+
+This table keeps one row per retained YouTube video watch event. It contains the participant ID, timestamp, watched title, cleaned title, URL, extracted `video_id`, and channel information where available.
+
+The notebook also writes side tables for auditing:
+
+- `outputs/tables/watch_histories.csv`
+- `outputs/tables/music_histories.csv`
+- `outputs/tables/ad_watch_histories.csv`
+- `outputs/tables/other_histories.csv`
+- `outputs/tables/title_prefix_diagnostics.csv`
+
+These side tables are useful because they show what was retained, what was excluded, and which localized title prefixes were recognized.
 
 ## 02 Clean Donated Search Data
 
 [Open notebook 02](scripts/02_clean_donated_search_data.html)
 
-Reads mock Takeout search-history JSON files, identifies genuine search-query rows with multilingual action-prefix logic, decodes search queries from URLs, and writes search-history tables.
+This notebook cleans donated YouTube search-history files. It reads mock Takeout-style search histories, combines donor files, standardizes columns, parses timestamps, decodes search queries from URLs, and identifies rows that represent genuine YouTube searches.
+
+The main handoff is:
+
+- `outputs/tables/search_query_histories.csv`
+
+This table is used later to determine whether a watch event occurred shortly after a participant searched on YouTube.
+
+The notebook also writes:
+
+- `outputs/tables/search_histories.csv`
+
+The distinction matters because not every row in a Takeout search-history file is necessarily useful for the exposure pathway indicator. The later workflow relies only on rows classified as genuine search-query events.
 
 ## 03 Scrape YouTube Metadata
 
 [Open notebook 03](scripts/03_scrape_youtube_metadata.html)
 
-Shows how to collect video-level metadata with `yt_dlp`. This notebook is documented but not executed in the public site because a real run requires authorization and a registered identifying User-Agent token.
+This notebook documents the metadata collection step. It reads unique `video_id`s from `outputs/tables/video_histories.csv` and shows how `yt_dlp` can be used to request public YouTube metadata for each video.
+
+The intended output of a real metadata run is:
+
+- `outputs/tables/meta_data.csv`
+
+Each row represents one unique YouTube video ID. If metadata can be retrieved, the row contains video-level fields such as title, channel, duration, upload date, format information, popularity metrics, language, subtitle availability, and related metadata. If metadata cannot be retrieved, the row is still kept and the raw `yt_dlp` error message is stored.
+
+::: callout-warning
+This notebook is documented but not executed in the public site. The public repository contains scrambled fake video IDs, which preserve the shape of the workflow but cannot be scraped from YouTube.
+:::
+
+To run this notebook in a real project, researchers would need authorized real YouTube IDs, appropriate legal and institutional permissions, and a registered identifying User-Agent token or equivalent project identifier. The notebook stops by default until `YOUR_REGISTERED_TOKEN` is replaced.
+
+For public reproduction, later notebooks can use the scrambled fixture:
+
+- `data/demo_metadata/meta_data_public.csv`
+
+This allows readers to understand the linking workflow without running live YouTube metadata collection.
 
 ## 04 Link Watch Data, Metadata, And Exposure Context
 
 [Open notebook 04](scripts/04_link_watch_metadata.html)
 
-Joins cleaned watch events to video metadata and adds event-level search-associated, subscribed-channel, Shorts/Longs, day/night, and problematic-view labels.
+This is the main enrichment notebook. It joins cleaned watch events to video-level metadata and adds the event-level indicators that turn raw watch histories into enriched exposure histories.
 
-## 05 Demonstrate Enriched Exposure Measures
+It reads:
 
-[Open notebook 05](scripts/05_demonstrate_enriched_exposure_measures.html)
+- `outputs/tables/video_histories.csv`
+- `outputs/tables/search_query_histories.csv`
+- `outputs/tables/meta_data.csv`, if available
+- `data/demo_metadata/meta_data_public.csv`, as the public fallback metadata fixture
+- donated subscription files from `data/mock_takeout`
+- `data/manual/unavailable_content_classification_filled.csv`
 
-The showcase notebook. It displays selected enriched watch events and creates figures demonstrating pathway mix, participant-level indicator shares, day/night by format, and problematic/unavailable-view signals.
+It writes the main enriched event table:
 
+- `outputs/tables/video_histories_enriched.csv`
+
+Each row is still one donated watch event, but now the event also carries metadata, linkage status, local-time helper fields, Shorts/Longs classification, day/night classification, search-associated markers, subscribed-channel markers, and availability/problematic-view labels.
+
+The notebook also writes audit and helper files:
+
+- `outputs/tables/metadata_linkage_report.csv`
+- `outputs/tables/subscription_histories.csv`
+- `outputs/tables/exposure_linkage_report.csv`
+- `outputs/tables/error_types_by_video.csv`
+
+Several methodological choices are made transparent in this notebook:
+
+- the day/night boundary is configurable;
+- the mock project uses `Europe/Copenhagen` as the default timezone;
+- Shorts are classified from metadata using duration and aspect-ratio logic;
+- search-associated views are marked when a participant search occurred 1 to 55 seconds before the watch event;
+- subscription-linked views are identified by comparing metadata channel IDs with donated subscription channel IDs;
+- raw metadata errors are preserved before being generalized and manually classified.
+
+The notebook keeps the unit of analysis at the watch-event level. No donated watch event is dropped simply because metadata is missing or returned an error.
+
+## 05 Estimate Watch Time
+
+[Open notebook 05](scripts/05_estimate_watchtime.html)
+
+This notebook estimates watch time from the enriched event table created by notebook 04. It uses the original workflow's core idea: if a participant starts another video before the current video's metadata duration has elapsed, the remaining duration is treated as skipped.
+
+It reads:
+
+- `outputs/tables/video_histories_enriched.csv`
+
+It writes:
+
+- `outputs/tables/video_histories_watchtime.csv`
+- `outputs/tables/watchtime_summary.csv`
+- `outputs/tables/watchtime_diagnostics.csv`
+
+The event-level output keeps one row per watch event and adds helper fields such as the next observed watch time, seconds until the next watch, estimated watch seconds, and a watch-time status flag. The summary collapses those estimates across the full mock dataset by participant, Shorts/Longs, and day/night.
+
+This estimate should not be interpreted as exact viewing completion. It is a transparent approximation based on observed start times and video duration metadata.
+
+## 06 Demonstrate Enriched Exposure Measures
+
+[Open notebook 06](scripts/06_demonstrate_enriched_exposure_measures.html)
+
+This is the showcase notebook. It starts from the enriched event table produced by notebook 04 and demonstrates what the method makes visible.
+
+It reads:
+
+- `outputs/tables/video_histories_enriched.csv`
+- `outputs/tables/video_histories_watchtime.csv`, when available
+- `outputs/tables/exposure_linkage_report.csv`, when available
+
+It writes:
+
+- `outputs/tables/demo_enriched_event_examples.csv`
+- `outputs/tables/demo_measure_summary.csv`
+- `outputs/figures/demo_pathway_mix.png`
+- `outputs/figures/demo_participant_measure_shares.png`
+- `outputs/figures/demo_daynight_shorts.png`
+- `outputs/figures/demo_problematic_views.png`
+
+The notebook first displays selected enriched watch events. These examples show how a single donated watch event can now be read together with metadata fields, pathway indicators, format labels, day/night labels, and availability/problematic-view signals.
+
+It then creates four compact figures:
+
+1.  **Pathway mix**\
+    Shows how many watched events are search-associated, subscription-linked, both, or neither.
+
+2.  **Participant-level measure shares**\
+    Summarizes exposure indicators by fictional donor in the mock dataset.
+
+3.  **Day/night and Shorts/Longs**\
+    Combines local viewing time with metadata-derived format labels.
+
+4.  **Problematic and unavailable signals**\
+    Demonstrates how later metadata errors and manual classification can be summarized as availability or problematic-view indicators.
+
+::: callout-note
+The figures are demonstrations of the method, not empirical findings about real YouTube users. The data are synthetic and scrambled.
+:::
+
+## How To Interpret The Pipeline
+
+The notebooks are designed to make the data transformation visible. Each step keeps intermediate outputs so that readers can inspect what changed between raw Takeout-style files and the final enriched exposure table.
+
+The most important conceptual shift happens between notebooks 01 and 04:
+
+- after notebook 01, the project has cleaned watch events;
+- after notebook 04, those watch events have become enriched exposure events.
+
+That enrichment does not reveal exactly why YouTube showed a video or why a participant watched it. Instead, it creates transparent indicators that can be used to study aggregate exposure patterns.
+
+For example:
+
+- `searched_for` indicates temporal proximity to a donated YouTube search;
+- `subscribed` indicates that the watched video's metadata channel ID appears in the participant's donated subscription list;
+- Shorts/Longs labels are derived from metadata;
+- day/night labels are derived from timestamps interpreted in the configured timezone;
+- watch-time estimates are derived from metadata duration and the next observed watch event for the same participant;
+- problematic-view labels are derived from later metadata errors and manual classification.
+
+These indicators should be interpreted as approximations. They are useful for aggregate analysis, but not definitive evidence about individual intention, recommendation logic, or platform causality.
+
+## Public Reproduction Notes
+
+The public repository is structured so that readers can follow the method without handling sensitive data.
+
+The public workflow uses:
+
+- mock donor files in `data/mock_takeout`;
+- a scrambled metadata fixture in `data/demo_metadata/meta_data_public.csv`;
+- a manual classification table for generalized availability messages;
+- rendered notebooks in `scripts/`;
+- generated tables and figures in `outputs/`.
+
+Notebook 03 is the exception: it documents the live metadata collection procedure but is not meant to be executed on the public fake IDs. The rest of the workflow can be followed using the provided public data.
+
+## Suggested Use
+
+Use this notebook guide as a map of the repository.
+
+For teaching or review, start with notebook 06 and then move backwards to inspect how the enriched table was built.
+
+For reproduction or adaptation, run the notebooks in order and inspect the output tables after each step. The intermediate CSV files are intentionally kept so that the workflow remains auditable rather than hidden inside one large script.

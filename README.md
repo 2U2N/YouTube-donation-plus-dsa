@@ -10,6 +10,7 @@ It demonstrates a reproducible workflow using scrambled mock Google Takeout-styl
 - how donated search histories and subscriptions can be standardized;
 - how video-level metadata can be collected with `yt_dlp` when authorized;
 - how watch events can be enriched with metadata, search-associated flags, subscribed-channel flags, Shorts/Longs labels, day/night labels, and problematic/unavailable-view indicators;
+- how watch time can be estimated from metadata duration and the next observed watch event;
 - how the enriched table can be summarized and visualized for article-facing demonstrations.
 
 ## Start Here
@@ -20,9 +21,10 @@ Open the rendered project site, or run the notebooks in order:
 2. `scripts/02_clean_donated_search_data.ipynb`
 3. `scripts/03_scrape_youtube_metadata.ipynb`
 4. `scripts/04_link_watch_metadata.ipynb`
-5. `scripts/05_demonstrate_enriched_exposure_measures.ipynb`
+5. `scripts/05_estimate_watchtime.ipynb`
+6. `scripts/06_demonstrate_enriched_exposure_measures.ipynb`
 
-Notebook 05 is the quickest overview of what the enriched data makes visible.
+Notebook 06 is the quickest overview of what the enriched data makes visible.
 
 ## Important Notes
 

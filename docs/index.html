@@ -153,12 +153,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-this-adds" id="toc-what-this-adds" class="nav-link active" data-scroll-target="#what-this-adds">What This Adds</a></li>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#what-this-repository-demonstrates" id="toc-what-this-repository-demonstrates" class="nav-link" data-scroll-target="#what-this-repository-demonstrates">What This Repository Demonstrates</a></li>
+  <li><a href="#what-enrichment-adds" id="toc-what-enrichment-adds" class="nav-link" data-scroll-target="#what-enrichment-adds">What Enrichment Adds</a></li>
   <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
   <li><a href="#recommended-entry-point" id="toc-recommended-entry-point" class="nav-link" data-scroll-target="#recommended-entry-point">Recommended Entry Point</a></li>
   <li><a href="#mock-data" id="toc-mock-data" class="nav-link" data-scroll-target="#mock-data">Mock Data</a></li>
-  <li><a href="#preview-figures" id="toc-preview-figures" class="nav-link" data-scroll-target="#preview-figures">Preview Figures</a></li>
+  <li><a href="#legalities-of-metadata-collection" id="toc-legalities-of-metadata-collection" class="nav-link" data-scroll-target="#legalities-of-metadata-collection">Legalities of Metadata Collection</a></li>
   <li><a href="#repository" id="toc-repository" class="nav-link" data-scroll-target="#repository">Repository</a></li>
+  <li><a href="#authorship-and-responsibility" id="toc-authorship-and-responsibility" class="nav-link" data-scroll-target="#authorship-and-responsibility">Authorship and Responsibility</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/2U2N/YouTube-donation-plus-dsa/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
@@ -168,6 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Enhancing YouTube Data Donations With Platform Metadata</h1>
+<p class="subtitle lead">A reproducible demonstration of enriched YouTube exposure histories</p>
 </div>
 
 
@@ -184,41 +188,121 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This project demonstrates how donated YouTube watch histories can be linked with video-level platform metadata to create enriched exposure histories.</p>
-<p>The workflow combines mock Google Takeout-style data with a metadata table in order to show what researchers can learn once watch events, search histories, subscriptions, metadata, and availability signals are joined around the YouTube <code>video_id</code>.</p>
-<section id="what-this-adds" class="level2">
-<h2 class="anchored" data-anchor-id="what-this-adds">What This Adds</h2>
-<p>Raw watch histories tell us that a participant started watching a video at a particular time. After enrichment, the same watch event can also carry:</p>
+<p>This repository demonstrates how donated YouTube account data can be linked with video- and channel-level platform metadata to create <strong>enriched exposure histories</strong>.</p>
+<p>The project accompanies the method described in <em>Enhancing YouTube Data Donations With Platform Metadata</em>. It shows, in reproducible form, how researchers can move from raw Google Takeout-style files, as obtained via data donations, to event-level indicators of YouTube exposure: what was watched, when it was watched, estimated watch time, whether it followed a search, whether it came from a subscribed channel, whether it was a Short or Long, and whether later metadata collection suggests that a video became unavailable for potentially problematic content-related reasons. For demonstration purposes this repository uses <strong>synthetic mock data</strong>.</p>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>YouTube watch histories are valuable for media, journalism and platform research because they record concrete viewing behavior over time rather than recall and report biased self-reports, aggregate platform metrics, or metadata by themselves. On their own, however, donated watch histories are sparse.</p>
+<p>This project shows how those traces can be enriched by joining them with video-level metadata through the YouTube <code>video_id</code>. After enrichment, each watch event can be analyzed not only as a timestamped view, but as part of a wider exposure history containing information about video format, channel context, likely viewing pathway, availability status, and time of day. In aggregate this allows inference not only on when but also on how data donors used the platform and provides additional information on what the people encountered.</p>
+<p>The workflow is meant for researchers who want to understand or adapt a data donation pipeline for YouTube-related research, especially in journalism studies, platform accountability research, computational social science, and media-use research.</p>
+</section>
+<section id="what-this-repository-demonstrates" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-repository-demonstrates">What This Repository Demonstrates</h2>
+<p>The repository shows how to:</p>
 <ul>
-<li>video duration, channel, popularity fields, format, and availability status;</li>
-<li>whether the watch closely followed a donated YouTube search;</li>
-<li>whether the video came from a donated subscribed channel;</li>
-<li>whether the event was a Short or Long;</li>
-<li>whether the event happened during the configured day or night period;</li>
-<li>whether later metadata errors indicate an unavailable or problematic-view signal.</li>
+<li>clean donated YouTube watch, search, and subscription files;</li>
+<li>extract and standardize YouTube <code>video_id</code>s across donated files;</li>
+<li>prepare a video-level metadata table;</li>
+<li>join donated histories and metadata at the event level;</li>
+<li>classify watches as search-associated or subscription-linked where possible;</li>
+<li>distinguish Shorts from Longs using metadata-derived rules;</li>
+<li>classify viewing as daytime or nighttime according to a configurable time window;</li>
+<li>estimate watch time from metadata duration and the next observed watch event;</li>
+<li>attach availability and problematic-view indicators based on metadata/error signals;</li>
 </ul>
+<p>The goal is not to reconstruct every individual viewing decision. YouTube does not provide authoritative explanations for why a specific video appeared in a user’s history and we have no access to what a given video meant to a given viewer at time of viewing. However, the workflow produces <strong>aggregate exposure indicators</strong> that allow insight into how YouTube use differs across users.</p>
+</section>
+<section id="what-enrichment-adds" class="level2">
+<h2 class="anchored" data-anchor-id="what-enrichment-adds">What Enrichment Adds</h2>
+<p>A raw watch-history row tells us that a participant started watching a video at a particular time. After enrichment, the same row can also include:</p>
+<ul>
+<li>video duration;</li>
+<li>channel and channel identifier;</li>
+<li>upload date;</li>
+<li>estimated watch time;</li>
+<li>view, like, and comment metadata;</li>
+<li>language, format, aspect ratio, and other video-level fields;</li>
+<li>whether the video is classified as a Short or Long;</li>
+<li>whether the watch happened during the configured day or night period;</li>
+<li>indication of whether the watch followed an explicit search;</li>
+<li>indication of whether the video came from a channel the user is subscribed to;</li>
+<li>whether a watched video was later removed by YouTube;</li>
+<li>whether the removal was due to potentially problematic content of the video</li>
+</ul>
+<p>These data can then be used for user-level assessments like:</p>
+<ul>
+<li>share of searched or subscribed watches among all watches</li>
+<li>estimated watch time across participants, formats, and routines</li>
+<li>distribution of Shorts/Longs across day/night watches</li>
+<li>frequency of encountering potentially problematic content</li>
+</ul>
+<p>These indicators are imperfect but useful. They are strongest when used to describe patterns across many events or participants, rather than to make definitive claims about single views. The figures below exemplify how the data can be used to quantify YouTube usage and identify differences between individual data donors. These examples are illustrative outputs from the synthetic mock data.</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/demo_pathway_mix.png" class="img-fluid figure-img"></p>
+<figcaption>Search and subscription context make it possible to distinguish whether watches followed explicit searches, came from subscribed channels, both, or neither.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/demo_participant_measure_shares.png" class="img-fluid figure-img"></p>
+<figcaption>The enriched event table allows participant-level comparison across searched, subscribed, Shorts, nighttime, and problematic-view indicators.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/demo_daynight_shorts.png" class="img-fluid figure-img"></p>
+<figcaption>Metadata-derived format labels and localized timestamps allow analyses of Shorts/Longs across day and night watching.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/demo_problematic_views.png" class="img-fluid figure-img"></p>
+<figcaption>Scraped metadata errors and manual classifications make unavailable or potentially problematic watched videos analyzable at the event level.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="workflow" class="level2">
 <h2 class="anchored" data-anchor-id="workflow">Workflow</h2>
 <div class="cell" data-layout-align="default">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>flowchart TD</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  A["Mock Google Takeout data&lt;br/&gt;watch, search, subscriptions"] --&gt; B["Clean donated histories"]</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  C["YouTube metadata&lt;br/&gt;yt-dlp or demo fixture"] --&gt; D["Video-level metadata table"]</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  B --&gt; E["Event-level enriched watch table"]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  A["Mock Google Takeout-style data&lt;br/&gt;watch histories, search histories, subscriptions"] --&gt; B["Clean donated histories"]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  C["Video-level metadata&lt;br/&gt;scraped metadata or public demo fixture"] --&gt; D["Prepare metadata table"]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  B --&gt; E["Join by YouTube video_id"]</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  D --&gt; E</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  E --&gt; F["Search, subscription,&lt;br/&gt;Shorts/Longs, day/night,&lt;br/&gt;problematic-view indicators"]</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  F --&gt; G["Showcase tables and figures"]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  E --&gt; F["Event-level enriched watch history"]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  F --&gt; G["Estimate watch time&lt;br/&gt;from duration and next observed watch"]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  F --&gt; H["Compute exposure indicators&lt;br/&gt;search, subscriptions, Shorts/Longs, day/night, availability"]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  G --&gt; I["Showcase tables and figures"]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  H --&gt; I</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-  A["Mock Google Takeout data&lt;br/&gt;watch, search, subscriptions"] --&gt; B["Clean donated histories"]
-  C["YouTube metadata&lt;br/&gt;yt-dlp or demo fixture"] --&gt; D["Video-level metadata table"]
-  B --&gt; E["Event-level enriched watch table"]
+  A["Mock Google Takeout-style data&lt;br/&gt;watch histories, search histories, subscriptions"] --&gt; B["Clean donated histories"]
+  C["Video-level metadata&lt;br/&gt;scraped metadata or public demo fixture"] --&gt; D["Prepare metadata table"]
+  B --&gt; E["Join by YouTube video_id"]
   D --&gt; E
-  E --&gt; F["Search, subscription,&lt;br/&gt;Shorts/Longs, day/night,&lt;br/&gt;problematic-view indicators"]
-  F --&gt; G["Showcase tables and figures"]
+  E --&gt; F["Event-level enriched watch history"]
+  F --&gt; G["Estimate watch time&lt;br/&gt;from duration and next observed watch"]
+  F --&gt; H["Compute exposure indicators&lt;br/&gt;search, subscriptions, Shorts/Longs, day/night, availability"]
+  G --&gt; I["Showcase tables and figures"]
+  H --&gt; I
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -228,38 +312,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="recommended-entry-point" class="level2">
 <h2 class="anchored" data-anchor-id="recommended-entry-point">Recommended Entry Point</h2>
-<p>Start with <a href="scripts/05_demonstrate_enriched_exposure_measures.html">Notebook 05</a>. It shows what the enriched data looks like and produces compact figures that demonstrate the article-facing value of the method.</p>
-<p>Then use <a href="notebooks.html">the notebook guide</a> to inspect the earlier cleaning, scraping, and linking steps.</p>
+<p>For a quick overview of the finished workflow, start with:</p>
+<p><a href="scripts/06_demonstrate_enriched_exposure_measures.html">Notebook 06: Demonstrate enriched exposure measures</a></p>
+<p>This notebook shows the final enriched data structure and produces compact figures that illustrate what the method makes visible.</p>
+<p>Then use the&nbsp;<a href="notebooks.html">notebook guide</a>&nbsp;to inspect the earlier steps in order: cleaning donated histories, preparing metadata, demonstrating scraping logic, linking records, estimating watch time, and producing the final exposure measures.</p>
 </section>
 <section id="mock-data" class="level2">
 <h2 class="anchored" data-anchor-id="mock-data">Mock Data</h2>
-<p>The repository contains scrambled mock Google Takeout-style data in <code>data/mock_takeout</code>.</p>
-<p>The mock data include three fictional donors:</p>
-<ul>
-<li>Alma</li>
-<li>Beata</li>
-<li>Carmen</li>
-</ul>
-<p>Each donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic: video IDs, video titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values.</p>
-<p>Included public data:</p>
-<ul>
-<li><code>data/mock_takeout/</code>: mock donor files.</li>
-<li><code>data/manual/unavailable_content_classification_filled.csv</code>: manual classification map for generalized availability/error messages.</li>
-<li><code>data/demo_metadata/meta_data_public.csv</code>: scrambled video metadata fixture used for offline reproduction.</li>
-</ul>
-<p>The public repository does not include real participant donations, private source Takeout exports, exploratory legacy notebooks, full scraped metadata with subtitle text or long descriptions, real YouTube video/channel identifiers, or temporary subtitle files.</p>
-<p>Notebook 03 demonstrates the scraping procedure, but public readers should not need to scrape YouTube to understand the method. The scrambled metadata fixture allows notebook 04 and notebook 05 to run offline while preserving the shape of the original metadata workflow. The fake public video IDs are not intended to be scrapeable.</p>
+<p>The mock dataset contains three fictional donors: Alma, Beata, Carmen. Each donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic. Video IDs, titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values.</p>
 </section>
-<section id="preview-figures" class="level2">
-<h2 class="anchored" data-anchor-id="preview-figures">Preview Figures</h2>
-<p><img src="outputs/figures/demo_pathway_mix.png" class="img-fluid"></p>
-<p><img src="outputs/figures/demo_participant_measure_shares.png" class="img-fluid"></p>
-<p><img src="outputs/figures/demo_daynight_shorts.png" class="img-fluid"></p>
-<p><img src="outputs/figures/demo_problematic_views.png" class="img-fluid"></p>
+<section id="legalities-of-metadata-collection" class="level2">
+<h2 class="anchored" data-anchor-id="legalities-of-metadata-collection">Legalities of Metadata Collection</h2>
+<p><a href="scripts/03_scrape_youtube_metadata.html">Notebook 03</a> demonstrates the metadata collection logic used in the method. In a real research project, metadata collection requires careful legal, ethical, and institutional assessment. It may also depend on the researcher’s access rights, data security setup, and platform access conditions.</p>
+<p>One route to obtain research access to YouTube is the Digital Services Act Article 40(12) for research with a systemic risk focus. Access can be requested via this <a href="https://requestrecords.google.com/researcher">request records form</a> and requires provision of the scraper’s IP and a <em>product token string</em> for authentication. Researchers with access can make themselves identifiable to YouTube by using their product token string as <code>IDENTIFYING_USER_AGENT</code> when scraping.</p>
+<p>An example of a successful data access request can be found <a href="https://github.com/2U2N/GRPA_YT/blob/main/GRPA_Share_Copy.pdf">here</a>.</p>
+<p>For further support in requesting data access under Article 40 of the DSA, the <a href="https://dsa40collaboratory.eu/">DSA Collaboratory</a> is highly recommended.</p>
 </section>
 <section id="repository" class="level2">
 <h2 class="anchored" data-anchor-id="repository">Repository</h2>
 <p>The source repository is available at <a href="https://github.com/2U2N/YouTube-donation-plus-dsa" class="uri">https://github.com/2U2N/YouTube-donation-plus-dsa</a>.</p>
+</section>
+<section id="authorship-and-responsibility" class="level2">
+<h2 class="anchored" data-anchor-id="authorship-and-responsibility">Authorship and Responsibility</h2>
+<p>I, <a href="https://2u2n.github.io/Website_David_Wegmann/">David Wegmann</a>, developed this data enrichment workflow and this website during my PhD studies as part of the DFF-funded <a href="https://datalab.au.dk/projects/social-media-influence">Social Media Influence</a> project at <a href="https://datalab.au.dk">DATALAB</a>, Aarhus University. Marcus Olesen, Andreas Hyldegaard and Ulrich Karstoft have contributed immensely to the development of data scraping and parsing scripts.</p>
+<p>YouTube data is not produced for research purposes, and interpreting scraped platform data often requires substantial (informed) guesswork. The results should therefore be treated with caution, and the interpretations offered here should not be understood as definitive. Donated and scraped data must be handled responsibly, as both may contain deeply personal traces of people’s lives, including traces created without any awareness that they could later become research data.</p>
 
 
 </section>

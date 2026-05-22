@@ -1,0 +1,15 @@
+section,measure,value
+inputs,watch_events,270
+inputs,participants,3
+inputs,events_with_duration,213
+inputs,events_missing_duration,57
+sequence,events_with_next_watch,267
+sequence,last_observed_events,3
+watchtime,events_with_estimated_watchtime,213
+watchtime,total_estimated_watch_hours,104.568
+status,cut_off_by_next_watch,11
+status,full_duration_before_next_watch,199
+status,missing_duration,57
+status,last_observed_event_unknown,3
+settings,assume_full_duration_for_last_event,False
+settings,cap_estimated_watchtime_to_duration,True
