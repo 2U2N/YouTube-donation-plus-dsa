@@ -162,9 +162,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#link-watch-data-metadata-and-exposure-context" id="toc-link-watch-data-metadata-and-exposure-context" class="nav-link" data-scroll-target="#link-watch-data-metadata-and-exposure-context">04 Link Watch Data, Metadata, And Exposure Context</a></li>
   <li><a href="#estimate-watch-time" id="toc-estimate-watch-time" class="nav-link" data-scroll-target="#estimate-watch-time">05 Estimate Watch Time</a></li>
   <li><a href="#demonstrate-enriched-exposure-measures" id="toc-demonstrate-enriched-exposure-measures" class="nav-link" data-scroll-target="#demonstrate-enriched-exposure-measures">06 Demonstrate Enriched Exposure Measures</a></li>
-  <li><a href="#how-to-interpret-the-pipeline" id="toc-how-to-interpret-the-pipeline" class="nav-link" data-scroll-target="#how-to-interpret-the-pipeline">How To Interpret The Pipeline</a></li>
-  <li><a href="#public-reproduction-notes" id="toc-public-reproduction-notes" class="nav-link" data-scroll-target="#public-reproduction-notes">Public Reproduction Notes</a></li>
-  <li><a href="#suggested-use" id="toc-suggested-use" class="nav-link" data-scroll-target="#suggested-use">Suggested Use</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/2U2N/YouTube-donation-plus-dsa/blob/main/notebooks.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
@@ -174,7 +171,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Notebook Guide</h1>
-<p class="subtitle lead">A six-step teaching pipeline for enriched YouTube exposure histories</p>
 </div>
 
 
@@ -191,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The notebooks in this repository are designed as a teaching pipeline. They show how donated YouTube account data can be cleaned, linked to platform metadata, and transformed into event-level exposure indicators.</p>
+<p>The notebooks in this repository are designed as a pipeline. They show how donated YouTube account data can be cleaned, linked to platform metadata, and transformed into event-level exposure indicators.</p>
 <p>The public version uses mock Google Takeout-style data and a scrambled metadata fixture. This means readers can inspect and reproduce the workflow without access to private participant donations or real YouTube identifiers.</p>
 <section id="recommended-reading-paths" class="level2">
 <h2 class="anchored" data-anchor-id="recommended-reading-paths">Recommended Reading Paths</h2>
@@ -443,58 +439,6 @@ Combines local viewing time with metadata-derived format labels.</p></li>
 <li><p><strong>Problematic and unavailable signals</strong><br>
 Demonstrates how later metadata errors and manual classification can be summarized as availability or problematic-view indicators.</p></li>
 </ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The figures are demonstrations of the method, not empirical findings about real YouTube users. The data are synthetic and scrambled.</p>
-</div>
-</div>
-</section>
-<section id="how-to-interpret-the-pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-interpret-the-pipeline">How To Interpret The Pipeline</h2>
-<p>The notebooks are designed to make the data transformation visible. Each step keeps intermediate outputs so that readers can inspect what changed between raw Takeout-style files and the final enriched exposure table.</p>
-<p>The most important conceptual shift happens between notebooks 01 and 04:</p>
-<ul>
-<li>after notebook 01, the project has cleaned watch events;</li>
-<li>after notebook 04, those watch events have become enriched exposure events.</li>
-</ul>
-<p>That enrichment does not reveal exactly why YouTube showed a video or why a participant watched it. Instead, it creates transparent indicators that can be used to study aggregate exposure patterns.</p>
-<p>For example:</p>
-<ul>
-<li><code>searched_for</code> indicates temporal proximity to a donated YouTube search;</li>
-<li><code>subscribed</code> indicates that the watched video’s metadata channel ID appears in the participant’s donated subscription list;</li>
-<li>Shorts/Longs labels are derived from metadata;</li>
-<li>day/night labels are derived from timestamps interpreted in the configured timezone;</li>
-<li>watch-time estimates are derived from metadata duration and the next observed watch event for the same participant;</li>
-<li>problematic-view labels are derived from later metadata errors and manual classification.</li>
-</ul>
-<p>These indicators should be interpreted as approximations. They are useful for aggregate analysis, but not definitive evidence about individual intention, recommendation logic, or platform causality.</p>
-</section>
-<section id="public-reproduction-notes" class="level2">
-<h2 class="anchored" data-anchor-id="public-reproduction-notes">Public Reproduction Notes</h2>
-<p>The public repository is structured so that readers can follow the method without handling sensitive data.</p>
-<p>The public workflow uses:</p>
-<ul>
-<li>mock donor files in <code>data/mock_takeout</code>;</li>
-<li>a scrambled metadata fixture in <code>data/demo_metadata/meta_data_public.csv</code>;</li>
-<li>a manual classification table for generalized availability messages;</li>
-<li>rendered notebooks in <code>scripts/</code>;</li>
-<li>generated tables and figures in <code>outputs/</code>.</li>
-</ul>
-<p>Notebook 03 is the exception: it documents the live metadata collection procedure but is not meant to be executed on the public fake IDs. The rest of the workflow can be followed using the provided public data.</p>
-</section>
-<section id="suggested-use" class="level2">
-<h2 class="anchored" data-anchor-id="suggested-use">Suggested Use</h2>
-<p>Use this notebook guide as a map of the repository.</p>
-<p>For teaching or review, start with notebook 06 and then move backwards to inspect how the enriched table was built.</p>
-<p>For reproduction or adaptation, run the notebooks in order and inspect the output tables after each step. The intermediate CSV files are intentionally kept so that the workflow remains auditable rather than hidden inside one large script.</p>
 
 
 </section>

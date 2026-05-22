@@ -1,9 +1,8 @@
 ---
 title: "Notebook Guide"
-subtitle: "A six-step teaching pipeline for enriched YouTube exposure histories"
 ---
 
-The notebooks in this repository are designed as a teaching pipeline. They show how donated YouTube account data can be cleaned, linked to platform metadata, and transformed into event-level exposure indicators.
+The notebooks in this repository are designed as a pipeline. They show how donated YouTube account data can be cleaned, linked to platform metadata, and transformed into event-level exposure indicators.
 
 The public version uses mock Google Takeout-style data and a scrambled metadata fixture. This means readers can inspect and reproduce the workflow without access to private participant donations or real YouTube identifiers.
 
@@ -214,51 +213,3 @@ It then creates four compact figures:
 
 4.  **Problematic and unavailable signals**\
     Demonstrates how later metadata errors and manual classification can be summarized as availability or problematic-view indicators.
-
-::: callout-note
-The figures are demonstrations of the method, not empirical findings about real YouTube users. The data are synthetic and scrambled.
-:::
-
-## How To Interpret The Pipeline
-
-The notebooks are designed to make the data transformation visible. Each step keeps intermediate outputs so that readers can inspect what changed between raw Takeout-style files and the final enriched exposure table.
-
-The most important conceptual shift happens between notebooks 01 and 04:
-
-- after notebook 01, the project has cleaned watch events;
-- after notebook 04, those watch events have become enriched exposure events.
-
-That enrichment does not reveal exactly why YouTube showed a video or why a participant watched it. Instead, it creates transparent indicators that can be used to study aggregate exposure patterns.
-
-For example:
-
-- `searched_for` indicates temporal proximity to a donated YouTube search;
-- `subscribed` indicates that the watched video's metadata channel ID appears in the participant's donated subscription list;
-- Shorts/Longs labels are derived from metadata;
-- day/night labels are derived from timestamps interpreted in the configured timezone;
-- watch-time estimates are derived from metadata duration and the next observed watch event for the same participant;
-- problematic-view labels are derived from later metadata errors and manual classification.
-
-These indicators should be interpreted as approximations. They are useful for aggregate analysis, but not definitive evidence about individual intention, recommendation logic, or platform causality.
-
-## Public Reproduction Notes
-
-The public repository is structured so that readers can follow the method without handling sensitive data.
-
-The public workflow uses:
-
-- mock donor files in `data/mock_takeout`;
-- a scrambled metadata fixture in `data/demo_metadata/meta_data_public.csv`;
-- a manual classification table for generalized availability messages;
-- rendered notebooks in `scripts/`;
-- generated tables and figures in `outputs/`.
-
-Notebook 03 is the exception: it documents the live metadata collection procedure but is not meant to be executed on the public fake IDs. The rest of the workflow can be followed using the provided public data.
-
-## Suggested Use
-
-Use this notebook guide as a map of the repository.
-
-For teaching or review, start with notebook 06 and then move backwards to inspect how the enriched table was built.
-
-For reproduction or adaptation, run the notebooks in order and inspect the output tables after each step. The intermediate CSV files are intentionally kept so that the workflow remains auditable rather than hidden inside one large script.
