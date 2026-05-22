@@ -137,14 +137,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./notebooks.html"> 
 <span class="menu-text">Notebooks</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./data.html"> 
-<span class="menu-text">Mock Data</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./reproduce.html"> 
-<span class="menu-text">Reproduce</span></a>
-  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -164,6 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-this-adds" id="toc-what-this-adds" class="nav-link active" data-scroll-target="#what-this-adds">What This Adds</a></li>
   <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
   <li><a href="#recommended-entry-point" id="toc-recommended-entry-point" class="nav-link" data-scroll-target="#recommended-entry-point">Recommended Entry Point</a></li>
+  <li><a href="#mock-data" id="toc-mock-data" class="nav-link" data-scroll-target="#mock-data">Mock Data</a></li>
   <li><a href="#preview-figures" id="toc-preview-figures" class="nav-link" data-scroll-target="#preview-figures">Preview Figures</a></li>
   <li><a href="#repository" id="toc-repository" class="nav-link" data-scroll-target="#repository">Repository</a></li>
   </ul>
@@ -237,6 +230,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="recommended-entry-point">Recommended Entry Point</h2>
 <p>Start with <a href="scripts/05_demonstrate_enriched_exposure_measures.html">Notebook 05</a>. It shows what the enriched data looks like and produces compact figures that demonstrate the article-facing value of the method.</p>
 <p>Then use <a href="notebooks.html">the notebook guide</a> to inspect the earlier cleaning, scraping, and linking steps.</p>
+</section>
+<section id="mock-data" class="level2">
+<h2 class="anchored" data-anchor-id="mock-data">Mock Data</h2>
+<p>The repository contains scrambled mock Google Takeout-style data in <code>data/mock_takeout</code>.</p>
+<p>The mock data include three fictional donors:</p>
+<ul>
+<li>Alma</li>
+<li>Beata</li>
+<li>Carmen</li>
+</ul>
+<p>Each donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic: video IDs, video titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values.</p>
+<p>Included public data:</p>
+<ul>
+<li><code>data/mock_takeout/</code>: mock donor files.</li>
+<li><code>data/manual/unavailable_content_classification_filled.csv</code>: manual classification map for generalized availability/error messages.</li>
+<li><code>data/demo_metadata/meta_data_public.csv</code>: scrambled video metadata fixture used for offline reproduction.</li>
+</ul>
+<p>The public repository does not include real participant donations, private source Takeout exports, exploratory legacy notebooks, full scraped metadata with subtitle text or long descriptions, real YouTube video/channel identifiers, or temporary subtitle files.</p>
+<p>Notebook 03 demonstrates the scraping procedure, but public readers should not need to scrape YouTube to understand the method. The scrambled metadata fixture allows notebook 04 and notebook 05 to run offline while preserving the shape of the original metadata workflow. The fake public video IDs are not intended to be scrapeable.</p>
 </section>
 <section id="preview-figures" class="level2">
 <h2 class="anchored" data-anchor-id="preview-figures">Preview Figures</h2>

@@ -4,8 +4,6 @@ project:
   render:
     - index.qmd
     - notebooks.qmd
-    - data.qmd
-    - reproduce.qmd
     - scripts/*.ipynb
 
 website:
@@ -18,10 +16,6 @@ website:
         text: Overview
       - href: notebooks.qmd
         text: Notebooks
-      - href: data.qmd
-        text: Mock Data
-      - href: reproduce.qmd
-        text: Reproduce
 
 format:
   html:
@@ -35,4 +29,3 @@ execute:
   echo: true
   warning: false
   message: false
-

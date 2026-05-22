@@ -266,34 +266,6 @@
     "text": "Result\nThe workflow now has both a full combined watch-history table and a validated video-watch table. The central join key for later enrichment is video_id, while the side tables and prefix diagnostics make the cleaning decisions auditable.\n\nStored Table Previews\nThe cells below show the first five rows of each dataframe saved as a CSV. Empty previews are expected when the mock data do not contain that row type.\n\nstored_watch_tables = {\n    \"watch_histories.csv\": watch_histories_export,\n    \"video_histories.csv\": video_histories,\n    \"music_histories.csv\": music_histories,\n    \"ad_watch_histories.csv\": ad_watch_histories,\n    \"other_histories.csv\": other_histories,\n    \"title_prefix_diagnostics.csv\": prefix_diagnostics,\n}\n\nfor file_name, dataframe in stored_watch_tables.items():\n    print(f\"{file_name} ({len(dataframe)} rows)\")\n    display(dataframe.head(5))\n\nwatch_histories.csv (300 rows)\n\n\n\n\n\n\n\n\n\nParticipant ID\ntime\nheader\nwatch_row_type\nwatched_title\ntitle_without_watch_prefix\nclean_title\nwatch_action_prefix\nwatch_action_language_hint\nprefix_removed\nurl\nvideo_id\nhas_valid_video_id\ndetails_missing\nhas_google_ads_marker\nis_youtube_music\nchannel_title\nchannel_url\nchannel_id\ndetails\n\n\n\n\n0\nAlma\n2025-03-24 07:32:25.697000+00:00\nYouTube\nvideo_watch\nWatched Demo video 072\nDemo video 072\nDemo video 072\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000072\nVID00000072\nTrue\nTrue\nFalse\nFalse\nDemo channel 051\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000051\nNaN\n\n\n1\nAlma\n2025-03-13 13:53:45.738000+00:00\nYouTube\nvideo_watch\nWatched Demo video 213\nDemo video 213\nDemo video 213\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000213\nVID00000213\nTrue\nTrue\nFalse\nFalse\nDemo channel 067\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000067\nNaN\n\n\n2\nAlma\n2025-02-04 21:01:38.803000+00:00\nYouTube\nvideo_watch\nWatched Demo video 051\nDemo video 051\nDemo video 051\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000051\nVID00000051\nTrue\nTrue\nFalse\nFalse\nDemo channel 081\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000081\nNaN\n\n\n3\nAlma\n2025-01-30 11:00:54.583000+00:00\nYouTube\nvideo_watch\nWatched Demo video 122\nDemo video 122\nDemo video 122\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000122\nVID00000122\nTrue\nTrue\nFalse\nFalse\nDemo channel 027\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000027\nNaN\n\n\n4\nAlma\n2024-12-13 07:07:08.189000+00:00\nYouTube\nvideo_watch\nWatched Demo video 157\nDemo video 157\nDemo video 157\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000157\nVID00000157\nTrue\nTrue\nFalse\nFalse\nDemo channel 137\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000137\nNaN\n\n\n\n\n\n\n\nvideo_histories.csv (270 rows)\n\n\n\n\n\n\n\n\n\nParticipant ID\ntime\nwatched_title\nclean_title\nwatch_action_prefix\nwatch_action_language_hint\nurl\nvideo_id\nchannel_title\nchannel_url\nchannel_id\n\n\n\n\n0\nAlma\n2025-03-24 07:32:25.697000+00:00\nWatched Demo video 072\nDemo video 072\nWatched\nEnglish\nhttps://www.youtube.com/watch?v=VID00000072\nVID00000072\nDemo channel 051\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000051\n\n\n1\nAlma\n2025-03-13 13:53:45.738000+00:00\nWatched Demo video 213\nDemo video 213\nWatched\nEnglish\nhttps://www.youtube.com/watch?v=VID00000213\nVID00000213\nDemo channel 067\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000067\n\n\n2\nAlma\n2025-02-04 21:01:38.803000+00:00\nWatched Demo video 051\nDemo video 051\nWatched\nEnglish\nhttps://www.youtube.com/watch?v=VID00000051\nVID00000051\nDemo channel 081\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000081\n\n\n3\nAlma\n2025-01-30 11:00:54.583000+00:00\nWatched Demo video 122\nDemo video 122\nWatched\nEnglish\nhttps://www.youtube.com/watch?v=VID00000122\nVID00000122\nDemo channel 027\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000027\n\n\n4\nAlma\n2024-12-13 07:07:08.189000+00:00\nWatched Demo video 157\nDemo video 157\nWatched\nEnglish\nhttps://www.youtube.com/watch?v=VID00000157\nVID00000157\nDemo channel 137\nhttps://www.youtube.com/channel/UCDEMOCHANNEL0...\nUCDEMOCHANNEL00000137\n\n\n\n\n\n\n\nmusic_histories.csv (0 rows)\n\n\n\n\n\n\n\n\n\nParticipant ID\ntime\nheader\nwatch_row_type\nwatched_title\ntitle_without_watch_prefix\nclean_title\nwatch_action_prefix\nwatch_action_language_hint\nprefix_removed\nurl\nvideo_id\nhas_valid_video_id\ndetails_missing\nhas_google_ads_marker\nis_youtube_music\nchannel_title\nchannel_url\nchannel_id\ndetails\n\n\n\n\n\n\n\n\n\nad_watch_histories.csv (30 rows)\n\n\n\n\n\n\n\n\n\nParticipant ID\ntime\nheader\nwatch_row_type\nwatched_title\ntitle_without_watch_prefix\nclean_title\nwatch_action_prefix\nwatch_action_language_hint\nprefix_removed\nurl\nvideo_id\nhas_valid_video_id\ndetails_missing\nhas_google_ads_marker\nis_youtube_music\nchannel_title\nchannel_url\nchannel_id\ndetails\n\n\n\n\n0\nAlma\n2024-11-19 07:03:16.172000+00:00\nYouTube\nad_watch\nWatched Demo video 280\nDemo video 280\nDemo video 280\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000280\nVID00000280\nTrue\nFalse\nTrue\nFalse\n&lt;NA&gt;\n&lt;NA&gt;\n&lt;NA&gt;\n[{'name': 'From Google Ads'}]\n\n\n1\nAlma\n2024-11-18 13:57:40.904000+00:00\nYouTube\nad_watch\nWatched Demo video 209\nDemo video 209\nDemo video 209\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000209\nVID00000209\nTrue\nFalse\nTrue\nFalse\n&lt;NA&gt;\n&lt;NA&gt;\n&lt;NA&gt;\n[{'name': 'From Google Ads'}]\n\n\n2\nAlma\n2024-10-30 21:54:36.016000+00:00\nYouTube\nad_watch\nWatched Demo video 302\nDemo video 302\nDemo video 302\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000302\nVID00000302\nTrue\nFalse\nTrue\nFalse\n&lt;NA&gt;\n&lt;NA&gt;\n&lt;NA&gt;\n[{'name': 'From Google Ads'}]\n\n\n3\nAlma\n2024-08-27 11:34:16.527000+00:00\nYouTube\nad_watch\nWatched Demo video 103\nDemo video 103\nDemo video 103\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000103\nVID00000103\nTrue\nFalse\nTrue\nFalse\n&lt;NA&gt;\n&lt;NA&gt;\n&lt;NA&gt;\n[{'name': 'From Google Ads'}]\n\n\n4\nAlma\n2024-08-13 13:44:28.283000+00:00\nYouTube\nad_watch\nWatched Demo video 208\nDemo video 208\nDemo video 208\nWatched\nEnglish\nTrue\nhttps://www.youtube.com/watch?v=VID00000208\nVID00000208\nTrue\nFalse\nTrue\nFalse\n&lt;NA&gt;\n&lt;NA&gt;\n&lt;NA&gt;\n[{'name': 'From Google Ads'}]\n\n\n\n\n\n\n\nother_histories.csv (0 rows)\n\n\n\n\n\n\n\n\n\nParticipant ID\ntime\nheader\nwatch_row_type\nwatched_title\ntitle_without_watch_prefix\nclean_title\nwatch_action_prefix\nwatch_action_language_hint\nprefix_removed\nurl\nvideo_id\nhas_valid_video_id\ndetails_missing\nhas_google_ads_marker\nis_youtube_music\nchannel_title\nchannel_url\nchannel_id\ndetails\n\n\n\n\n\n\n\n\n\ntitle_prefix_diagnostics.csv (1 rows)\n\n\n\n\n\n\n\n\n\nwatch_action_prefix\nwatch_action_language_hint\nrows\n\n\n\n\n0\nWatched\nEnglish\n300"
   },
   {
-    "objectID": "data.html",
-    "href": "data.html",
-    "title": "Mock Data",
-    "section": "",
-    "text": "This repository contains scrambled mock Google Takeout-style data in data/mock_takeout.\nThe mock data include three fictional donors:\nEach donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic: video IDs, video titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values."
-  },
-  {
-    "objectID": "data.html#included-public-data",
-    "href": "data.html#included-public-data",
-    "title": "Mock Data",
-    "section": "Included Public Data",
-    "text": "Included Public Data\n\ndata/mock_takeout/: mock donor files.\ndata/manual/unavailable_content_classification_filled.csv: manual classification map for generalized availability/error messages.\ndata/demo_metadata/meta_data_public.csv: scrambled video metadata fixture used for offline reproduction."
-  },
-  {
-    "objectID": "data.html#excluded-data",
-    "href": "data.html#excluded-data",
-    "title": "Mock Data",
-    "section": "Excluded Data",
-    "text": "Excluded Data\nThe public repository does not include:\n\nreal participant donations;\nprivate source Takeout exports;\nexploratory legacy notebooks;\nfull scraped metadata with subtitle text or long descriptions;\nreal YouTube video/channel identifiers, titles, tags, or search queries;\ntemporary subtitle files."
-  },
-  {
-    "objectID": "data.html#why-a-metadata-fixture-is-included",
-    "href": "data.html#why-a-metadata-fixture-is-included",
-    "title": "Mock Data",
-    "section": "Why A Metadata Fixture Is Included",
-    "text": "Why A Metadata Fixture Is Included\nNotebook 03 demonstrates the scraping procedure, but public readers should not need to scrape YouTube to understand the method. The scrambled metadata fixture allows notebook 04 and notebook 05 to run offline while preserving the shape of the original metadata workflow. The fake public video IDs are not intended to be scrapeable."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Enhancing YouTube Data Donations With Platform Metadata",
@@ -320,6 +292,13 @@
     "title": "Enhancing YouTube Data Donations With Platform Metadata",
     "section": "Recommended Entry Point",
     "text": "Recommended Entry Point\nStart with Notebook 05. It shows what the enriched data looks like and produces compact figures that demonstrate the article-facing value of the method.\nThen use the notebook guide to inspect the earlier cleaning, scraping, and linking steps."
+  },
+  {
+    "objectID": "index.html#mock-data",
+    "href": "index.html#mock-data",
+    "title": "Enhancing YouTube Data Donations With Platform Metadata",
+    "section": "Mock Data",
+    "text": "Mock Data\nThe repository contains scrambled mock Google Takeout-style data in data/mock_takeout.\nThe mock data include three fictional donors:\n\nAlma\nBeata\nCarmen\n\nEach donor folder contains small watch-history, search-history, and subscription files with the same broad structure as a YouTube Takeout export. The public identifiers and text fields are synthetic: video IDs, video titles, channel IDs, channel names, search queries, tags, and URLs have been replaced with deterministic fake values.\nIncluded public data:\n\ndata/mock_takeout/: mock donor files.\ndata/manual/unavailable_content_classification_filled.csv: manual classification map for generalized availability/error messages.\ndata/demo_metadata/meta_data_public.csv: scrambled video metadata fixture used for offline reproduction.\n\nThe public repository does not include real participant donations, private source Takeout exports, exploratory legacy notebooks, full scraped metadata with subtitle text or long descriptions, real YouTube video/channel identifiers, or temporary subtitle files.\nNotebook 03 demonstrates the scraping procedure, but public readers should not need to scrape YouTube to understand the method. The scrambled metadata fixture allows notebook 04 and notebook 05 to run offline while preserving the shape of the original metadata workflow. The fake public video IDs are not intended to be scrapeable."
   },
   {
     "objectID": "index.html#preview-figures",
@@ -376,41 +355,6 @@
     "title": "Notebook Guide",
     "section": "05 Demonstrate Enriched Exposure Measures",
     "text": "05 Demonstrate Enriched Exposure Measures\nOpen notebook 05\nThe showcase notebook. It displays selected enriched watch events and creates figures demonstrating pathway mix, participant-level indicator shares, day/night by format, and problematic/unavailable-view signals."
-  },
-  {
-    "objectID": "reproduce.html",
-    "href": "reproduce.html",
-    "title": "Reproduce",
-    "section": "",
-    "text": "Install Python dependencies:\npip install -r requirements.txt\nInstall Quarto from https://quarto.org/."
-  },
-  {
-    "objectID": "reproduce.html#requirements",
-    "href": "reproduce.html#requirements",
-    "title": "Reproduce",
-    "section": "",
-    "text": "Install Python dependencies:\npip install -r requirements.txt\nInstall Quarto from https://quarto.org/."
-  },
-  {
-    "objectID": "reproduce.html#render-the-site",
-    "href": "reproduce.html#render-the-site",
-    "title": "Reproduce",
-    "section": "Render The Site",
-    "text": "Render The Site\nFrom the repository root:\nquarto render\nThe rendered site is written to docs/."
-  },
-  {
-    "objectID": "reproduce.html#run-the-pipeline",
-    "href": "reproduce.html#run-the-pipeline",
-    "title": "Reproduce",
-    "section": "Run The Pipeline",
-    "text": "Run The Pipeline\nThe notebooks are ordered:\n\nClean donated watch data.\nClean donated search data.\nScrape or provide metadata.\nLink metadata and add event-level indicators.\nDemonstrate the enriched measures.\n\nNotebook 03 requires real YouTube video IDs, a registered identifying token, and authorization to collect YouTube metadata. The public mock IDs are scrambled and cannot be scraped. If you do not run notebook 03 with your own real IDs, notebook 04 uses data/demo_metadata/meta_data_public.csv as a public offline fixture."
-  },
-  {
-    "objectID": "reproduce.html#publish-with-github-pages",
-    "href": "reproduce.html#publish-with-github-pages",
-    "title": "Reproduce",
-    "section": "Publish With GitHub Pages",
-    "text": "Publish With GitHub Pages\nOne simple option is to configure GitHub Pages to serve the docs/ folder from the main branch.\nAfter rendering locally:\ngit add .\ngit commit -m \"Render public Quarto site\"\ngit push\nThen enable Pages in the repository settings."
   },
   {
     "objectID": "scripts/02_clean_donated_search_data.html",
