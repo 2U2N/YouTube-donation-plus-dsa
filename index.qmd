@@ -70,14 +70,14 @@ These indicators are imperfect but useful. They are strongest when used to descr
 
 ```{mermaid}
 flowchart TD
-  A["Mock Google Takeout-style data<br/>watch histories, search histories, subscriptions"] --> B["Clean donated histories"]
-  C["Video-level metadata<br/>scraped metadata or public demo fixture"] --> D["Prepare metadata table"]
+  A["Google Takeout-data<br/>watch histories, search histories, subscriptions"] --> B["Clean donated histories"]
+  C["Video-level metadata<br/>scraped metadata"] --> D["Prepare metadata table"]
   B --> E["Join by YouTube video_id"]
   D --> E
   E --> F["Event-level enriched watch history"]
   F --> G["Estimate watch time<br/>from duration and next observed watch"]
   F --> H["Compute exposure indicators<br/>search, subscriptions, Shorts/Longs, day/night, availability"]
-  G --> I["Showcase tables and figures"]
+  G --> I["Tables and figures"]
   H --> I
 ```
 
