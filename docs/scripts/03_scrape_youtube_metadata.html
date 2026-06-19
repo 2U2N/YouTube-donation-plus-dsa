@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="dependency-check" class="level2">
 <h2 class="anchored" data-anchor-id="dependency-check">Dependency Check</h2>
 <p>This notebook requires <code>yt_dlp</code>. The import check below does not install anything automatically; it prints the command to run if the package is missing.</p>
-<div id="ac3f081f" class="cell">
+<div id="ac3f081f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.util <span class="im">import</span> find_spec</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
@@ -212,64 +212,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="locate-the-project-and-configure-the-scraper" class="level2">
 <h2 class="anchored" data-anchor-id="locate-the-project-and-configure-the-scraper">Locate The Project And Configure The Scraper</h2>
-<p>Replace <code>YOUR_REGISTERED_TOKEN</code> with the registered identifying token or User-Agent string agreed for your project. The original scraper used this value in the HTTP <code>User-Agent</code> header; this notebook does the same.</p>
-<div id="cf12f211" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_project_root(start<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> Path.cwd() <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> Path(start)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> candidate <span class="kw">in</span> [start, <span class="op">*</span>start.parents]:</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        has_quarto_project <span class="op">=</span> (candidate <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists()</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        has_video_histories <span class="op">=</span> (candidate <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"tables"</span> <span class="op">/</span> <span class="st">"video_histories.csv"</span>).exists()</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> has_quarto_project <span class="kw">and</span> has_video_histories:</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> candidate</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Could not find the Quarto project root. Run this notebook from "</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inside youtube_donation_dsa_method after creating video_histories.csv."</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> find_project_root()</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"tables"</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>VIDEO_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"video_histories.csv"</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>META_DATA_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"meta_data.csv"</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>SUBTITLES_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"subtitles_tmp"</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>IDENTIFYING_USER_AGENT <span class="op">=</span> <span class="st">"YOUR_REGISTERED_TOKEN"</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>SLEEP_SECONDS_BETWEEN_REQUESTS <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>MAX_VIDEOS_FOR_TEST <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>SUBTITLE_LANGUAGES <span class="op">=</span> [<span class="st">"en"</span>]</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Project folder: </span><span class="sc">{</span>PROJECT_ROOT<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Input table: </span><span class="sc">{</span>VIDEO_HISTORIES_PATH<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Output table: </span><span class="sc">{</span>META_DATA_PATH<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run this notebook from the Quarto project root. Replace <code>YOUR_REGISTERED_TOKEN</code> with the registered identifying token or User-Agent string agreed for your project. The original scraper used this value in the HTTP <code>User-Agent</code> header; this notebook does the same.</p>
+<div id="cf12f211" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd().resolve()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (PROJECT_ROOT <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists():</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Run this notebook from the project root: cd youtube-donation-dsa-method-public, then open JupyterLab or run quarto render."</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"tables"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>VIDEO_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"video_histories.csv"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>META_DATA_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"meta_data.csv"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>SUBTITLES_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"subtitles_tmp"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>IDENTIFYING_USER_AGENT <span class="op">=</span> <span class="st">"YOUR_REGISTERED_TOKEN"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>SLEEP_SECONDS_BETWEEN_REQUESTS <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>MAX_VIDEOS_FOR_TEST <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>SUBTITLE_LANGUAGES <span class="op">=</span> [<span class="st">"en"</span>]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Project folder: </span><span class="sc">{</span>PROJECT_ROOT<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Input table: </span><span class="sc">{</span>VIDEO_HISTORIES_PATH<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Output table: </span><span class="sc">{</span>META_DATA_PATH<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="load-unique-video-ids" class="level2">
 <h2 class="anchored" data-anchor-id="load-unique-video-ids">Load Unique Video IDs</h2>
 <p>The metadata table is video-level, not watch-event-level. We therefore deduplicate the <code>video_id</code> values from <code>video_histories.csv</code> before scraping.</p>
-<div id="da58324d" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>video_histories <span class="op">=</span> pd.read_csv(VIDEO_HISTORIES_PATH, dtype<span class="op">=</span>{<span class="st">"video_id"</span>: <span class="st">"string"</span>})</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">"video_id"</span> <span class="kw">not</span> <span class="kw">in</span> video_histories.columns:</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"video_histories.csv must contain a video_id column."</span>)</span>
+<div id="da58324d" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> VIDEO_HISTORIES_PATH.exists():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Missing input table: </span><span class="sc">{</span>VIDEO_HISTORIES_PATH<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>unique_video_ids <span class="op">=</span> <span class="bu">sorted</span>(video_histories[<span class="st">"video_id"</span>].dropna().unique())</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>video_histories <span class="op">=</span> pd.read_csv(VIDEO_HISTORIES_PATH, dtype<span class="op">=</span>{<span class="st">"video_id"</span>: <span class="st">"string"</span>})</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> MAX_VIDEOS_FOR_TEST <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    unique_video_ids <span class="op">=</span> unique_video_ids[:MAX_VIDEOS_FOR_TEST]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">"video_id"</span> <span class="kw">not</span> <span class="kw">in</span> video_histories.columns:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"video_histories.csv must contain a video_id column."</span>)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>pd.Series(</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_rows"</span>: <span class="bu">len</span>(video_histories),</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"unique_video_ids_to_scrape"</span>: <span class="bu">len</span>(unique_video_ids),</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"max_videos_for_test"</span>: MAX_VIDEOS_FOR_TEST,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>unique_video_ids <span class="op">=</span> <span class="bu">sorted</span>(video_histories[<span class="st">"video_id"</span>].dropna().unique())</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> MAX_VIDEOS_FOR_TEST <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    unique_video_ids <span class="op">=</span> unique_video_ids[:MAX_VIDEOS_FOR_TEST]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>pd.Series(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_rows"</span>: <span class="bu">len</span>(video_histories),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"unique_video_ids_to_scrape"</span>: <span class="bu">len</span>(unique_video_ids),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"max_videos_for_test"</span>: MAX_VIDEOS_FOR_TEST,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="metadata-schema" class="level2">
 <h2 class="anchored" data-anchor-id="metadata-schema">Metadata Schema</h2>
 <p>The fields below are a compact CSV version of the original scraper schema. The <code>error</code> column is intentionally part of the schema because unavailable, private, removed, or age-restricted videos can be analytically informative.</p>
-<div id="be58b779" class="cell">
+<div id="be58b779" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>CORE_METADATA_FIELDS <span class="op">=</span> [</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"id"</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"title"</span>,</span>
@@ -312,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="scraper-helpers" class="level2">
 <h2 class="anchored" data-anchor-id="scraper-helpers">Scraper Helpers</h2>
 <p>The original code requested both manually provided subtitles and automatic captions in English, wrote VTT files temporarily, read them back into the metadata row, and deleted the temporary files. This notebook follows that logic while also recording which subtitle languages were available and downloaded.</p>
-<div id="d17781c8" class="cell">
+<div id="d17781c8" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DummyLogger:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> debug(<span class="va">self</span>, msg):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
@@ -356,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    row[<span class="st">"downloaded_subtitle_file_count"</span>] <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> row</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b4ea65e9" class="cell">
+<div id="b4ea65e9" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_metadata(video_id, quiet<span class="op">=</span><span class="va">True</span>, no_warnings<span class="op">=</span><span class="va">True</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> yt_dlp <span class="im">as</span> yt</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -421,7 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="run-the-scrape" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-scrape">Run The Scrape</h2>
 <p>This cell performs live requests. It will stop until <code>IDENTIFYING_USER_AGENT</code> is changed from <code>YOUR_REGISTERED_TOKEN</code>. The default delay between requests is <code>0</code> because this notebook assumes the project has permission to scrape; increase <code>SLEEP_SECONDS_BETWEEN_REQUESTS</code> if your access conditions require slower pacing.</p>
-<div id="da8cfd60" class="cell">
+<div id="da8cfd60" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>validate_scraper_config()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>SUBTITLES_DIR.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -444,7 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="diagnostics">Diagnostics</h2>
 <p>After scraping, these diagnostics summarize coverage and errors. Error rows are not failures of the notebook; they are data about videos that could not be retrieved or whose subtitles could not be downloaded.</p>
-<div id="fcbff5d1" class="cell">
+<div id="fcbff5d1" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>diagnostics <span class="op">=</span> {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unique_video_ids_requested"</span>: <span class="bu">len</span>(unique_video_ids),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metadata_rows_written"</span>: <span class="bu">len</span>(meta_data),</span>
@@ -455,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>pd.Series(diagnostics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d976d2bb" class="cell">
+<div id="d976d2bb" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>error_summary <span class="op">=</span> (</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    meta_data.loc[meta_data[<span class="st">"error"</span>].notna(), <span class="st">"error"</span>]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    .value_counts()</span>
@@ -469,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="result" class="level2">
 <h2 class="anchored" data-anchor-id="result">Result</h2>
 <p>The stored metadata table is keyed by <code>id</code>, which is the YouTube <code>video_id</code>. It can now be joined back to <code>video_histories.csv</code> in the next notebook.</p>
-<div id="ee0ad4da" class="cell">
+<div id="ee0ad4da" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"meta_data.csv (</span><span class="sc">{</span><span class="bu">len</span>(meta_data)<span class="sc">}</span><span class="ss"> rows)"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>display(meta_data.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

@@ -6,6 +6,19 @@ The notebooks in this repository are designed as a pipeline. They show how donat
 
 The public version uses mock Google Takeout-style data and a scrambled metadata fixture. This means readers can inspect and reproduce the workflow without access to private participant donations or real YouTube identifiers.
 
+To run the notebooks locally, start JupyterLab from the repository root:
+
+```bash
+cd youtube-donation-dsa-method-public
+jupyter lab
+```
+
+Quarto rendering uses the same root:
+
+```bash
+quarto render
+```
+
 ## Recommended Reading Paths
 
 There are two useful ways to read the notebooks.

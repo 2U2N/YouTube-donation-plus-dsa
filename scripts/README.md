@@ -2,6 +2,13 @@
 
 These notebooks are ordered. Each one is a native Jupyter notebook that can also be rendered by Quarto.
 
+Run them from the repository root. For interactive work:
+
+```bash
+cd youtube-donation-dsa-method-public
+jupyter lab
+```
+
 1. `01_clean_donated_watch_data.ipynb` cleans mock YouTube watch-history donations.
 2. `02_clean_donated_search_data.ipynb` cleans mock YouTube search-history donations.
 3. `03_scrape_youtube_metadata.ipynb` documents the metadata scrape with `yt_dlp`. It is not executed when the public site is rendered.

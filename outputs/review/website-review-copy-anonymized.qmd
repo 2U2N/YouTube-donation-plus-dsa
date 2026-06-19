@@ -1,0 +1,7 @@
+---
+title: "Enhancing YouTube Data Donations With Platform Metadata"
+subtitle: "Anonymized website companion for review"
+---
+
+This PDF is an anonymized review copy of the public companion website. It summarizes the website's purpose, workflow, mock data, legal/ethical notes, and notebook guide without repository or authorship-identifying sections.
+

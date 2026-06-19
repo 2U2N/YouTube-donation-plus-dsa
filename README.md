@@ -15,7 +15,7 @@ It demonstrates a reproducible workflow using scrambled mock Google Takeout-styl
 
 ## Start Here
 
-Open the rendered project site, or run the notebooks in order:
+Open the rendered project site, or run the notebooks in order from the project root:
 
 1. `scripts/01_clean_donated_watch_data.ipynb`
 2. `scripts/02_clean_donated_search_data.ipynb`
@@ -36,9 +36,17 @@ Notebook 06 is the quickest overview of what the enriched data makes visible.
 
 ## Local Reproduction
 
-Install the requirements, then render the project:
+Start from the repository root when using either Quarto or JupyterLab:
 
 ```bash
+cd youtube-donation-dsa-method-public
 pip install -r requirements.txt
 quarto render
+```
+
+To run the notebooks interactively:
+
+```bash
+cd youtube-donation-dsa-method-public
+jupyter lab
 ```

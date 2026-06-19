@@ -171,7 +171,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Enhancing YouTube Data Donations With Platform Metadata</h1>
-<p class="subtitle lead">A reproducible demonstration of enriched YouTube exposure histories</p>
 </div>
 
 
@@ -280,28 +279,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="workflow">Workflow</h2>
 <div class="cell" data-layout-align="default">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>flowchart TD</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  A["Mock Google Takeout-style data&lt;br/&gt;watch histories, search histories, subscriptions"] --&gt; B["Clean donated histories"]</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  C["Video-level metadata&lt;br/&gt;scraped metadata or public demo fixture"] --&gt; D["Prepare metadata table"]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  A["Google Takeout-data&lt;br/&gt;watch histories, search histories, subscriptions"] --&gt; B["Clean donated histories"]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  C["Video-level metadata&lt;br/&gt;scraped metadata"] --&gt; D["Prepare metadata table"]</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  B --&gt; E["Join by YouTube video_id"]</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  D --&gt; E</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  E --&gt; F["Event-level enriched watch history"]</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  F --&gt; G["Estimate watch time&lt;br/&gt;from duration and next observed watch"]</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  F --&gt; H["Compute exposure indicators&lt;br/&gt;search, subscriptions, Shorts/Longs, day/night, availability"]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  G --&gt; I["Showcase tables and figures"]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  G --&gt; I["Tables and figures"]</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  H --&gt; I</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-  A["Mock Google Takeout-style data&lt;br/&gt;watch histories, search histories, subscriptions"] --&gt; B["Clean donated histories"]
-  C["Video-level metadata&lt;br/&gt;scraped metadata or public demo fixture"] --&gt; D["Prepare metadata table"]
+  A["Google Takeout-data&lt;br/&gt;watch histories, search histories, subscriptions"] --&gt; B["Clean donated histories"]
+  C["Video-level metadata&lt;br/&gt;scraped metadata"] --&gt; D["Prepare metadata table"]
   B --&gt; E["Join by YouTube video_id"]
   D --&gt; E
   E --&gt; F["Event-level enriched watch history"]
   F --&gt; G["Estimate watch time&lt;br/&gt;from duration and next observed watch"]
   F --&gt; H["Compute exposure indicators&lt;br/&gt;search, subscriptions, Shorts/Longs, day/night, availability"]
-  G --&gt; I["Showcase tables and figures"]
+  G --&gt; I["Tables and figures"]
   H --&gt; I
 </pre>
 </div>

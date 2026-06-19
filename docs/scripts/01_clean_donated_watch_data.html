@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This notebook demonstrates the first step in the data-donation workflow: turning raw Google Takeout-style YouTube watch-history files into clean event-level tables.</p>
-<p>The notebook uses mock donor data stored in <code>data/mock_takeout</code>. The same logic can be adapted to confidential GDPR data donations by changing the input path and adding project-specific consent, exclusion, and participant metadata rules.</p>
+<p>The notebook uses mock donor data stored in <code>data/mock_takeout</code>. The same logic can be adapted to real Google Takeout data as obtained in data donations by changing the input path.</p>
 <section id="what-this-notebook-produces" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-notebook-produces">What This Notebook Produces</h2>
 <p>The notebook writes several CSV files to <code>outputs/tables</code>.</p>
@@ -219,35 +219,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="locate-the-project-and-input-data" class="level2">
 <h2 class="anchored" data-anchor-id="locate-the-project-and-input-data">Locate The Project And Input Data</h2>
-<p>The notebook is designed to run from the Quarto project root or from the <code>scripts</code> folder. The helper below walks upward from the current working directory until it finds the Quarto project and the mock Takeout folder.</p>
+<p>Run this notebook from the Quarto project root. Start JupyterLab from the repository root or run <code>quarto render</code> there so all paths resolve project-relative.</p>
 <div id="8c43703e" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_project_root(start<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> Path.cwd() <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> Path(start)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> candidate <span class="kw">in</span> [start, <span class="op">*</span>start.parents]:</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        has_quarto_project <span class="op">=</span> (candidate <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists()</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        has_mock_data <span class="op">=</span> (candidate <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"mock_takeout"</span>).exists()</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> has_quarto_project <span class="kw">and</span> has_mock_data:</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> candidate</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Could not find the Quarto project root. Run this notebook from "</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inside youtube_donation_dsa_method."</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> find_project_root()</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>MOCK_TAKEOUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"mock_takeout"</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"tables"</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>WATCH_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"watch_histories.csv"</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>VIDEO_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"video_histories.csv"</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>MUSIC_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"music_histories.csv"</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>AD_WATCH_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"ad_watch_histories.csv"</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>OTHER_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"other_histories.csv"</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>TITLE_PREFIX_DIAGNOSTICS_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"title_prefix_diagnostics.csv"</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Project folder: </span><span class="sc">{</span>PROJECT_ROOT<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mock data folder: </span><span class="sc">{</span>MOCK_TAKEOUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Output folder: </span><span class="sc">{</span>OUTPUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd().resolve()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (PROJECT_ROOT <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists():</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Run this notebook from the project root: cd youtube-donation-dsa-method-public, then open JupyterLab or run quarto render."</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>MOCK_TAKEOUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"mock_takeout"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"outputs"</span> <span class="op">/</span> <span class="st">"tables"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>WATCH_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"watch_histories.csv"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>VIDEO_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"video_histories.csv"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>MUSIC_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"music_histories.csv"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>AD_WATCH_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"ad_watch_histories.csv"</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>OTHER_HISTORIES_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"other_histories.csv"</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>TITLE_PREFIX_DIAGNOSTICS_PATH <span class="op">=</span> OUTPUT_DIR <span class="op">/</span> <span class="st">"title_prefix_diagnostics.csv"</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Project folder: </span><span class="sc">{</span>PROJECT_ROOT<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mock data folder: </span><span class="sc">{</span>MOCK_TAKEOUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Output folder: </span><span class="sc">{</span>OUTPUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Project folder: youtube-donation-dsa-method-public
 Mock data folder: data/mock_takeout
@@ -259,18 +250,27 @@ Output folder: outputs/tables</code></pre>
 <h2 class="anchored" data-anchor-id="find-donated-watch-history-files">Find Donated Watch-History Files</h2>
 <p>Google Takeout stores YouTube watch history at <code>YouTube and YouTube Music/history/watch-history.json</code>. In this mock dataset, each donor has one folder, so the donor folder name becomes the participant identifier.</p>
 <div id="7a54aa96" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>watch_files <span class="op">=</span> <span class="bu">sorted</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    MOCK_TAKEOUT_DIR.glob(<span class="st">"*/YouTube and YouTube Music/history/watch-history.json"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>watch_file_index <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Participant ID"</span>: [path.relative_to(MOCK_TAKEOUT_DIR).parts[<span class="dv">0</span>] <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_history_file"</span>: [path.relative_to(PROJECT_ROOT).as_posix() <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>watch_file_index</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> MOCK_TAKEOUT_DIR.exists():</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Missing mock Takeout folder: </span><span class="sc">{</span>MOCK_TAKEOUT_DIR<span class="sc">.</span>relative_to(PROJECT_ROOT)<span class="sc">.</span>as_posix()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>watch_files <span class="op">=</span> <span class="bu">sorted</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    MOCK_TAKEOUT_DIR.glob(<span class="st">"*/YouTube and YouTube Music/history/watch-history.json"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> watch_files:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No watch-history.json files found under data/mock_takeout."</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>watch_file_index <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Participant ID"</span>: [path.relative_to(MOCK_TAKEOUT_DIR).parts[<span class="dv">0</span>] <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"watch_history_file"</span>: [path.relative_to(PROJECT_ROOT).as_posix() <span class="cf">for</span> path <span class="kw">in</span> watch_files],</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>watch_file_index</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
