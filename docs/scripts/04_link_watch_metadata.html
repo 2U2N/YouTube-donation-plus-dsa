@@ -226,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="locate-project-files" class="level2">
 <h2 class="anchored" data-anchor-id="locate-project-files">Locate Project Files</h2>
-<p>Run this notebook from the Quarto project root. Paths are kept project-relative so rendered notebooks do not expose private local folders.</p>
+<p>Run this notebook from the project root.</p>
 <div id="9216698f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd().resolve()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (PROJECT_ROOT <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists():</span>
@@ -270,52 +270,56 @@ Output folder: outputs/tables</code></pre>
 <section id="configure-event-flags" class="level2">
 <h2 class="anchored" data-anchor-id="configure-event-flags">Configure Event Flags</h2>
 <p>These settings control event-level labels. The mock data represents Danish users, so the default timezone is <code>Europe/Copenhagen</code>. The original day/night distinction treated <code>06:00-23:59</code> as day and <code>00:00-05:59</code> as night; the boundaries are configurable here.</p>
-<div id="c901f3cd" class="cell" data-execution_count="3">
+<div id="c901f3cd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ANALYSIS_TIMEZONE <span class="op">=</span> <span class="st">"Europe/Copenhagen"</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>DAYTIME_START_HOUR <span class="op">=</span> <span class="dv">6</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>DAYTIME_END_HOUR <span class="op">=</span> <span class="dv">24</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>SHORT_MAX_DURATION_SECONDS <span class="op">=</span> <span class="dv">180</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>SHORT_MAX_ASPECT_RATIO <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate_hour_boundary(value, label, allow_24<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    upper <span class="op">=</span> <span class="dv">24</span> <span class="cf">if</span> allow_24 <span class="cf">else</span> <span class="dv">23</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(value, <span class="bu">int</span>) <span class="kw">or</span> value <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">or</span> value <span class="op">&gt;</span> upper:</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss"> must be an integer from 0 to </span><span class="sc">{</span>upper<span class="sc">}</span><span class="ss">."</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>validate_hour_boundary(DAYTIME_START_HOUR, <span class="st">"DAYTIME_START_HOUR"</span>)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>validate_hour_boundary(DAYTIME_END_HOUR, <span class="st">"DAYTIME_END_HOUR"</span>, allow_24<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> DAYTIME_START_HOUR <span class="op">==</span> DAYTIME_END_HOUR:</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"DAYTIME_START_HOUR and DAYTIME_END_HOUR must define a non-empty interval."</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hour_is_in_interval(hours, start_hour, end_hour):</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start_hour <span class="op">&lt;</span> end_hour:</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> hours.ge(start_hour) <span class="op">&amp;</span> hours.lt(end_hour)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hours.ge(start_hour) <span class="op">|</span> hours.lt(end_hour)</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>configuration <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"setting"</span>: [</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ANALYSIS_TIMEZONE"</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            <span class="st">"DAYTIME_START_HOUR"</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">"DAYTIME_END_HOUR"</span>,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SHORT_MAX_DURATION_SECONDS"</span>,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SHORT_MAX_ASPECT_RATIO"</span>,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"value"</span>: [</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            ANALYSIS_TIMEZONE,</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>            DAYTIME_START_HOUR,</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>            DAYTIME_END_HOUR,</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_DURATION_SECONDS,</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_ASPECT_RATIO,</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>configuration</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>SHORTS_LAUNCH_DATE <span class="op">=</span> <span class="st">"2021-07-13"</span> <span class="co"># default: day of international roll-out of YouTube Shorts</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>SHORTS_LAUNCH_TIMESTAMP <span class="op">=</span> pd.Timestamp(SHORTS_LAUNCH_DATE)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>SHORT_MAX_DURATION_SECONDS <span class="op">=</span> <span class="dv">180</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>SHORT_MAX_ASPECT_RATIO <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate_hour_boundary(value, label, allow_24<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    upper <span class="op">=</span> <span class="dv">24</span> <span class="cf">if</span> allow_24 <span class="cf">else</span> <span class="dv">23</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(value, <span class="bu">int</span>) <span class="kw">or</span> value <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">or</span> value <span class="op">&gt;</span> upper:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss"> must be an integer from 0 to </span><span class="sc">{</span>upper<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>validate_hour_boundary(DAYTIME_START_HOUR, <span class="st">"DAYTIME_START_HOUR"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>validate_hour_boundary(DAYTIME_END_HOUR, <span class="st">"DAYTIME_END_HOUR"</span>, allow_24<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> DAYTIME_START_HOUR <span class="op">==</span> DAYTIME_END_HOUR:</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"DAYTIME_START_HOUR and DAYTIME_END_HOUR must define a non-empty interval."</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hour_is_in_interval(hours, start_hour, end_hour):</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start_hour <span class="op">&lt;</span> end_hour:</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> hours.ge(start_hour) <span class="op">&amp;</span> hours.lt(end_hour)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hours.ge(start_hour) <span class="op">|</span> hours.lt(end_hour)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>configuration <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"setting"</span>: [</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ANALYSIS_TIMEZONE"</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>            <span class="st">"DAYTIME_START_HOUR"</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>            <span class="st">"DAYTIME_END_HOUR"</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SHORTS_LAUNCH_DATE"</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SHORT_MAX_DURATION_SECONDS"</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SHORT_MAX_ASPECT_RATIO"</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"value"</span>: [</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>            ANALYSIS_TIMEZONE,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>            DAYTIME_START_HOUR,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>            DAYTIME_END_HOUR,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>            SHORTS_LAUNCH_DATE,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_DURATION_SECONDS,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_ASPECT_RATIO,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>configuration</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
@@ -346,11 +350,16 @@ Output folder: outputs/tables</code></pre>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>SHORT_MAX_DURATION_SECONDS</td>
-<td>180</td>
+<td>SHORTS_LAUNCH_DATE</td>
+<td>2021-07-13</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
+<td>SHORT_MAX_DURATION_SECONDS</td>
+<td>180</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
 <td>SHORT_MAX_ASPECT_RATIO</td>
 <td>1</td>
 </tr>
@@ -363,7 +372,7 @@ Output folder: outputs/tables</code></pre>
 </section>
 <section id="configure-problematic-view-classification" class="level2">
 <h2 class="anchored" data-anchor-id="configure-problematic-view-classification">Configure Problematic-View Classification</h2>
-<p>The raw scraper error is kept unchanged, but the original workflow also grouped similar error messages before manual classification. These settings make that process visible and editable: the regular expressions normalize common <code>yt_dlp</code> messages, the alias map handles known wording variants, and the manual CSV assigns each generalized message to a category and criticality code.</p>
+<p>The notebook also groups similar error messages before manual classification: regular expressions normalize common <code>yt_dlp</code> messages, the alias map handles known wording variants, and the manual CSV assigns each generalized message to a category and criticality code.</p>
 <div id="e7658f39" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ACCOUNT_TERMINATED_MESSAGE <span class="op">=</span> (</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Video unavailable. This video is no longer available because the YouTube account "</span></span>
@@ -754,7 +763,7 @@ Output folder: outputs/tables</code></pre>
 </section>
 <section id="prepare-and-deduplicate-metadata" class="level2">
 <h2 class="anchored" data-anchor-id="prepare-and-deduplicate-metadata">Prepare And Deduplicate Metadata</h2>
-<p>Scraping pipelines can produce duplicate metadata rows when several scrape batches are combined. Following the original metadata-combination logic, we keep one row per video ID and prefer rows with usable metadata: successful status, title, duration, and channel ID.</p>
+<p>Scraping pipelines can produce duplicate metadata rows when several scrape batches are combined. Here, we keep one row per video ID and prefer rows with usable metadata: successful status, title, duration, and channel ID.</p>
 <div id="ea870572" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> has_text(series):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> series.notna() <span class="op">&amp;</span> series.astype(<span class="st">"string"</span>).<span class="bu">str</span>.strip().ne(<span class="st">""</span>).fillna(<span class="va">False</span>)</span>
@@ -888,7 +897,7 @@ Output folder: outputs/tables</code></pre>
 </section>
 <section id="classify-metadata-errors" class="level2">
 <h2 class="anchored" data-anchor-id="classify-metadata-errors">Classify Metadata Errors</h2>
-<p>The classification has two layers. First, raw scraper errors are normalized into generalized messages so that video IDs, creator names, and repeated <code>yt_dlp</code> prefixes do not create artificial categories. Second, the generalized message is matched to the manual classification table from the original workflow.</p>
+<p>The classification has two layers. First, raw scraper errors are normalized into generalized messages so that video IDs, creator names, and repeated <code>yt_dlp</code> prefixes do not create artificial categories. Second, the generalized message is matched to a manually created and editable classification table.</p>
 <p>If a future scrape creates a generalized message that is not in the manual table or the explicit alias map, the notebook stops and prints the missing messages. This is intentional: new availability messages should be reviewed rather than silently assigned.</p>
 <div id="9d041dd9" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>manual_map <span class="op">=</span> pd.read_csv(MANUAL_CLASSIFICATION_PATH, dtype<span class="op">=</span><span class="bu">str</span>, low_memory<span class="op">=</span><span class="va">False</span>)</span>
@@ -1485,8 +1494,8 @@ Output folder: outputs/tables</code></pre>
 </section>
 <section id="add-shortslongs-and-daynight-flags" class="level2">
 <h2 class="anchored" data-anchor-id="add-shortslongs-and-daynight-flags">Add Shorts/Longs And Day/Night Flags</h2>
-<p>These are full-dataset event labels, not period summaries. The timestamp stays in UTC as <code>time</code>; local-time helper columns are added only so daytime and nighttime can be interpreted in the configured timezone.</p>
-<p>Shorts are identified with the same metadata rule used in the original workflow: vertical or square-ish videos with duration at most 180 seconds. Missing Shorts evidence is treated as not short, matching the original downstream handling.</p>
+<p>These are full-dataset event labels. The timestamp stays in UTC as <code>time</code>; local-time helper columns are added only so daytime and nighttime can be interpreted in the configured timezone.</p>
+<p>Shorts are identified from metadata as per <a href="https://support.google.com/youtube/answer/15424877?hl=en">YouTube’s own rules</a>: videos must be uploaded on or after the configured Shorts launch date, be vertical or square-ish, and have duration at most 180 seconds. Missing upload-date, aspect-ratio, or duration evidence is treated as not short for downstream labels.</p>
 <div id="df31a3e8" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"watch_local_time"</span>] <span class="op">=</span> video_histories_enriched[<span class="st">"time"</span>].dt.tz_convert(ANALYSIS_TIMEZONE)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"watch_local_date"</span>] <span class="op">=</span> video_histories_enriched[<span class="st">"watch_local_time"</span>].dt.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
@@ -1502,55 +1511,66 @@ Output folder: outputs/tables</code></pre>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"time_of_day"</span>] <span class="op">=</span> pd.Series(<span class="st">"night"</span>, index<span class="op">=</span>video_histories_enriched.index, dtype<span class="op">=</span><span class="st">"string"</span>)</span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>video_histories_enriched.loc[video_histories_enriched[<span class="st">"is_daytime_watch"</span>], <span class="st">"time_of_day"</span>] <span class="op">=</span> <span class="st">"day"</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"shorts_metadata_available"</span>] <span class="op">=</span> (</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    video_histories_enriched[<span class="st">"aspect_ratio"</span>].notna()</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"duration_seconds"</span>].notna()</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"is_short"</span>] <span class="op">=</span> (</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    video_histories_enriched[<span class="st">"shorts_metadata_available"</span>]</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"aspect_ratio"</span>].le(SHORT_MAX_ASPECT_RATIO)</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"duration_seconds"</span>].le(SHORT_MAX_DURATION_SECONDS)</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>).astype(<span class="st">"boolean"</span>)</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"is_long"</span>] <span class="op">=</span> (<span class="op">~</span>video_histories_enriched[<span class="st">"is_short"</span>]).astype(<span class="st">"boolean"</span>)</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Backward-compatible alias for readers who saw the earlier metadata-link notebook.</span></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"is_short_by_metadata"</span>] <span class="op">=</span> video_histories_enriched[<span class="st">"is_short"</span>]</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (video_histories_enriched[<span class="st">"is_daytime_watch"</span>] <span class="op">^</span> video_histories_enriched[<span class="st">"is_nighttime_watch"</span>]).<span class="bu">all</span>():</span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">AssertionError</span>(<span class="st">"Each event should be exactly one of daytime or nighttime."</span>)</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (video_histories_enriched[<span class="st">"is_short"</span>] <span class="op">^</span> video_histories_enriched[<span class="st">"is_long"</span>]).<span class="bu">all</span>():</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">AssertionError</span>(<span class="st">"Each event should be exactly one of short or long."</span>)</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>event_flag_diagnostics <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">"measure"</span>: [</span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>            <span class="st">"analysis_timezone"</span>,</span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>            <span class="st">"daytime_start_hour"</span>,</span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>            <span class="st">"daytime_end_hour"</span>,</span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">"short_max_duration_seconds"</span>,</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>            <span class="st">"short_max_aspect_ratio"</span>,</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>            <span class="st">"shorts_watch_events"</span>,</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">"longs_watch_events"</span>,</span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>            <span class="st">"watch_events_missing_shorts_metadata"</span>,</span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>            <span class="st">"daytime_watch_events"</span>,</span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>            <span class="st">"nighttime_watch_events"</span>,</span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>        <span class="st">"value"</span>: [</span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>            ANALYSIS_TIMEZONE,</span>
-<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>            DAYTIME_START_HOUR,</span>
-<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>            DAYTIME_END_HOUR,</span>
-<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_DURATION_SECONDS,</span>
-<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_ASPECT_RATIO,</span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_short"</span>].<span class="bu">sum</span>()),</span>
-<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_long"</span>].<span class="bu">sum</span>()),</span>
-<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>((<span class="op">~</span>video_histories_enriched[<span class="st">"shorts_metadata_available"</span>]).<span class="bu">sum</span>()),</span>
-<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_daytime_watch"</span>].<span class="bu">sum</span>()),</span>
-<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_nighttime_watch"</span>].<span class="bu">sum</span>()),</span>
-<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>event_flag_diagnostics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>shorts_upload_date <span class="op">=</span> pd.to_datetime(</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    video_histories_enriched[<span class="st">"upload_date"</span>].astype(<span class="st">"string"</span>),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"%Y%m</span><span class="sc">%d</span><span class="st">"</span>,</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    errors<span class="op">=</span><span class="st">"coerce"</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"shorts_metadata_available"</span>] <span class="op">=</span> (</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    shorts_upload_date.notna()</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"aspect_ratio"</span>].notna()</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"duration_seconds"</span>].notna()</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"is_short"</span>] <span class="op">=</span> (</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    video_histories_enriched[<span class="st">"shorts_metadata_available"</span>]</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> shorts_upload_date.ge(SHORTS_LAUNCH_TIMESTAMP)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"aspect_ratio"</span>].le(SHORT_MAX_ASPECT_RATIO)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> video_histories_enriched[<span class="st">"duration_seconds"</span>].le(SHORT_MAX_DURATION_SECONDS)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>).astype(<span class="st">"boolean"</span>)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"is_long"</span>] <span class="op">=</span> (<span class="op">~</span>video_histories_enriched[<span class="st">"is_short"</span>]).astype(<span class="st">"boolean"</span>)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Backward-compatible alias for readers who saw the earlier metadata-link notebook.</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>video_histories_enriched[<span class="st">"is_short_by_metadata"</span>] <span class="op">=</span> video_histories_enriched[<span class="st">"is_short"</span>]</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (video_histories_enriched[<span class="st">"is_daytime_watch"</span>] <span class="op">^</span> video_histories_enriched[<span class="st">"is_nighttime_watch"</span>]).<span class="bu">all</span>():</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">AssertionError</span>(<span class="st">"Each event should be exactly one of daytime or nighttime."</span>)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (video_histories_enriched[<span class="st">"is_short"</span>] <span class="op">^</span> video_histories_enriched[<span class="st">"is_long"</span>]).<span class="bu">all</span>():</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">AssertionError</span>(<span class="st">"Each event should be exactly one of short or long."</span>)</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>event_flag_diagnostics <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">"measure"</span>: [</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>            <span class="st">"analysis_timezone"</span>,</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>            <span class="st">"daytime_start_hour"</span>,</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>            <span class="st">"daytime_end_hour"</span>,</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>            <span class="st">"shorts_launch_date"</span>,</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>            <span class="st">"short_max_duration_seconds"</span>,</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>            <span class="st">"short_max_aspect_ratio"</span>,</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">"shorts_watch_events"</span>,</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>            <span class="st">"longs_watch_events"</span>,</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>            <span class="st">"watch_events_missing_shorts_metadata"</span>,</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>            <span class="st">"watch_events_before_shorts_launch_date"</span>,</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>            <span class="st">"daytime_watch_events"</span>,</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>            <span class="st">"nighttime_watch_events"</span>,</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>        <span class="st">"value"</span>: [</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>            ANALYSIS_TIMEZONE,</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>            DAYTIME_START_HOUR,</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>            DAYTIME_END_HOUR,</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>            SHORTS_LAUNCH_DATE,</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_DURATION_SECONDS,</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>            SHORT_MAX_ASPECT_RATIO,</span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_short"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_long"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>((<span class="op">~</span>video_histories_enriched[<span class="st">"shorts_metadata_available"</span>]).<span class="bu">sum</span>()),</span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>((video_histories_enriched[<span class="st">"shorts_metadata_available"</span>] <span class="op">&amp;</span> shorts_upload_date.lt(SHORTS_LAUNCH_TIMESTAMP)).<span class="bu">sum</span>()),</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_daytime_watch"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>            <span class="bu">int</span>(video_histories_enriched[<span class="st">"is_nighttime_watch"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>event_flag_diagnostics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 
@@ -1581,36 +1601,46 @@ Output folder: outputs/tables</code></pre>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>short_max_duration_seconds</td>
-<td>180</td>
+<td>shorts_launch_date</td>
+<td>2021-07-13</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
-<td>short_max_aspect_ratio</td>
-<td>1</td>
+<td>short_max_duration_seconds</td>
+<td>180</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">5</th>
-<td>shorts_watch_events</td>
-<td>10</td>
+<td>short_max_aspect_ratio</td>
+<td>1</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">6</th>
-<td>longs_watch_events</td>
-<td>260</td>
+<td>shorts_watch_events</td>
+<td>0</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">7</th>
-<td>watch_events_missing_shorts_metadata</td>
-<td>57</td>
+<td>longs_watch_events</td>
+<td>270</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">8</th>
+<td>watch_events_missing_shorts_metadata</td>
+<td>57</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>watch_events_before_shorts_launch_date</td>
+<td>213</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
 <td>daytime_watch_events</td>
 <td>237</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">9</th>
+<th data-quarto-table-cell-role="th">11</th>
 <td>nighttime_watch_events</td>
 <td>33</td>
 </tr>
@@ -1623,8 +1653,8 @@ Output folder: outputs/tables</code></pre>
 </section>
 <section id="add-search-associated-watch-marker" class="level2">
 <h2 class="anchored" data-anchor-id="add-search-associated-watch-marker">Add Search-Associated Watch Marker</h2>
-<p>The original full-data workflow estimated a post-search interval from the distribution of search-watch distances. Here we do not refit that model on mock data. Instead, we apply the validated interval from the original analysis as a fixed methodological parameter: a watch is marked as searched when a participant search occurred 1 to 55 seconds before the watch event.</p>
-<p>Only search timestamps and participant IDs are used. Search query text is intentionally not copied into the enriched watch table.</p>
+<p>Search-associated watching is marked through a same-participant time-window linkage. A watch is marked as searched when that participant has a search timestamp 1 to 55 seconds before the watch event; this interval is used as a fixed methodological parameter rather than refit on the small mock dataset.</p>
+<p>Only participant IDs and search timestamps are used for the linkage. Search query text is intentionally not copied into the enriched watch table.</p>
 <div id="59094a04" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>SEARCH_INTERVALS_SEC <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">55</span>)]</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2549,7 +2579,7 @@ Output folder: outputs/tables</code></pre>
 <tr class="even">
 <th data-quarto-table-cell-role="th">11</th>
 <td>watch_events_flagged_short_by_metadata</td>
-<td>10</td>
+<td>0</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">12</th>
@@ -2703,7 +2733,7 @@ Saved outputs/tables/error_types_by_video.csv</code></pre>
            metadata_error_watch_events     57
          watch_events_missing_duration     57
        watch_events_missing_channel_id     24
-watch_events_flagged_short_by_metadata     10
+watch_events_flagged_short_by_metadata      0
                  matched_unique_videos    255
         missing_metadata_unique_videos      0
           metadata_error_unique_videos     54
@@ -2726,11 +2756,13 @@ Exposure and classification diagnostics
       event_flags                                            analysis_timezone Europe/Copenhagen
       event_flags                                           daytime_start_hour                 6
       event_flags                                             daytime_end_hour                24
+      event_flags                                           shorts_launch_date        2021-07-13
       event_flags                                   short_max_duration_seconds               180
       event_flags                                       short_max_aspect_ratio                 1
-      event_flags                                          shorts_watch_events                10
-      event_flags                                           longs_watch_events               260
+      event_flags                                          shorts_watch_events                 0
+      event_flags                                           longs_watch_events               270
       event_flags                         watch_events_missing_shorts_metadata                57
+      event_flags                       watch_events_before_shorts_launch_date               213
       event_flags                                         daytime_watch_events               237
       event_flags                                       nighttime_watch_events                33
 problematic_views                                        errored_unique_videos                54

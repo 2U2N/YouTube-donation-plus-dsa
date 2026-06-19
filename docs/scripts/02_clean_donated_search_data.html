@@ -193,7 +193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This notebook demonstrates the second cleaning step in the data-donation workflow: turning raw Google Takeout-style YouTube search-history files into a combined search-history table and a narrower table of genuine YouTube search queries.</p>
-<p>The notebook uses mock donor data stored in <code>data/mock_takeout</code>. The same logic can be adapted to confidential GDPR data donations by changing the input path and adding project-specific consent, exclusion, and participant metadata rules.</p>
+<p>The notebook uses mock donor data stored in <code>data/mock_takeout</code>. The same logic can be adapted to real data donations by changing the input path.</p>
 <section id="what-this-notebook-produces" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-notebook-produces">What This Notebook Produces</h2>
 <p>The notebook writes two CSV files to <code>outputs/tables</code>.</p>
@@ -319,7 +319,7 @@ Output folder: outputs/tables</code></pre>
 </section>
 <section id="standardize-columns" class="level2">
 <h2 class="anchored" data-anchor-id="standardize-columns">Standardize Columns</h2>
-<p>The original Takeout fields are useful but not always named for analysis. We rename <code>title</code> to <code>search_title</code> and <code>titleUrl</code> to <code>url</code>. We keep <code>details</code> and <code>description</code> in the combined table so non-query rows remain inspectable without assigning them stronger labels than the data support.</p>
+<p>The original Takeout fields are useful but not always named for analysis. We rename <code>title</code> to <code>search_title</code> and <code>titleUrl</code> to <code>url</code>. We keep <code>details</code> and <code>description</code> in the combined table so non-query rows remain inspectable without assigning them stronger labels than the data support since we have no authoritative source on what they mean.</p>
 <div id="cc1dd364" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>search_histories <span class="op">=</span> search_histories.rename(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>{</span>
@@ -883,7 +883,7 @@ dtype: object</code></pre>
 </section>
 <section id="result" class="level2">
 <h2 class="anchored" data-anchor-id="result">Result</h2>
-<p>The workflow now has a combined donated search-history table and a narrower search-query table. The search-query table can be used later to estimate whether watch events occurred shortly after explicit YouTube searches.</p>
+<p>The workflow now has a combined donated search-history table and a narrower search-query table. The search-query table can be used later to estimate whether watch events can be associated with a search by checking whether they occurred shortly after explicit YouTube searches by the same data donor.</p>
 <section id="stored-table-previews" class="level3">
 <h3 class="anchored" data-anchor-id="stored-table-previews">Stored Table Previews</h3>
 <p>The cells below show the first five rows of each dataframe saved as a CSV.</p>

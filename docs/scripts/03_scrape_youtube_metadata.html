@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This notebook demonstrates how to build a video-level metadata table for the videos observed in donated YouTube watch histories.</p>
-<p>It reads unique <code>video_id</code> values from <code>outputs/tables/video_histories.csv</code>, uses <code>yt_dlp</code> to request public YouTube metadata, and writes one metadata row per unique video to <code>outputs/tables/meta_data.csv</code>. <strong>Public-data note.</strong> The video IDs included in this public repository are scrambled fake IDs. They preserve the shape of the workflow but cannot be scraped from YouTube. To run this notebook for a real project, replace the input <code>video_id</code> values with authorized real YouTube IDs and replace <code>YOUR_REGISTERED_TOKEN</code> with your registered identifying token.</p>
+<p>It reads unique <code>video_id</code> values from <code>outputs/tables/video_histories.csv</code>, uses <code>yt_dlp</code> to request public YouTube metadata, and writes one metadata row per unique video to <code>outputs/tables/meta_data.csv</code>. <strong>Public-data note.</strong> The video IDs included in this public repository are scrambled fake IDs. They preserve the shape of the workflow but cannot be scraped from YouTube. To run this notebook for a real project, replace the input <code>video_id</code> values with real YouTube IDs and replace <code>YOUR_REGISTERED_TOKEN</code> with your registered identifying token.</p>
 <section id="what-this-notebook-produces" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-notebook-produces">What This Notebook Produces</h2>
 <p>The main output is <code>outputs/tables/meta_data.csv</code>.</p>
@@ -212,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="locate-the-project-and-configure-the-scraper" class="level2">
 <h2 class="anchored" data-anchor-id="locate-the-project-and-configure-the-scraper">Locate The Project And Configure The Scraper</h2>
-<p>Run this notebook from the Quarto project root. Replace <code>YOUR_REGISTERED_TOKEN</code> with the registered identifying token or User-Agent string agreed for your project. The original scraper used this value in the HTTP <code>User-Agent</code> header; this notebook does the same.</p>
+<p>Run this notebook from the project root. Replace <code>YOUR_REGISTERED_TOKEN</code> with the registered identifying token or User-Agent string agreed for your project.</p>
 <div id="cf12f211" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd().resolve()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> (PROJECT_ROOT <span class="op">/</span> <span class="st">"_quarto.yml"</span>).exists():</span>
@@ -307,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="scraper-helpers" class="level2">
 <h2 class="anchored" data-anchor-id="scraper-helpers">Scraper Helpers</h2>
-<p>The original code requested both manually provided subtitles and automatic captions in English, wrote VTT files temporarily, read them back into the metadata row, and deleted the temporary files. This notebook follows that logic while also recording which subtitle languages were available and downloaded.</p>
+<p>The notebook requests manually provided subtitles and automatic captions in English, stores downloaded VTT files temporarily, reads their text into the metadata row, deletes the temporary files, and records which subtitle languages were available and downloaded.</p>
 <div id="d17781c8" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DummyLogger:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> debug(<span class="va">self</span>, msg):</span>

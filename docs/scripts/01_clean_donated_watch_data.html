@@ -517,8 +517,7 @@ Name: time, dtype: datetime64[ns, UTC]</code></pre>
 </section>
 <section id="handle-details-and-classify-rows" class="level2">
 <h2 class="anchored" data-anchor-id="handle-details-and-classify-rows">Handle <code>details</code> And Classify Rows</h2>
-<p>This step follows the validated selection mechanic from the original workflow: a retained video-watch row must have a standard watch URL, an 11-character <code>video_id</code>, and no <code>details</code> value. Rows with <code>details</code> are excluded from <code>video_histories</code> because in the original data this field captured ads and other non-standard watch-history records.</p>
-<p>We still detect Google Ads explicitly and save them separately, so readers can inspect what was excluded.</p>
+<p>Regular video watch entries are identified as those that have a standard watch URL, an 11-character <code>video_id</code>, and no <code>details</code> value. Rows with values in the <code>details</code> column are ads and other non-standrad watch-history records. They are excluded from <code>video_histories</code>. We still detect Google Ads explicitly and save them separately for inspection.</p>
 <div id="8936426d" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> details_missing(value):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This mirrors the original `details.isna()` selection rule.</span></span>

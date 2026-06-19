@@ -10,7 +10,7 @@ missing_metadata_watch_events,0
 metadata_error_watch_events,57
 watch_events_missing_duration,57
 watch_events_missing_channel_id,24
-watch_events_flagged_short_by_metadata,10
+watch_events_flagged_short_by_metadata,0
 matched_unique_videos,255
 missing_metadata_unique_videos,0
 metadata_error_unique_videos,54

@@ -15,11 +15,13 @@ subscription,watch_events_missing_metadata_channel_id,57
 event_flags,analysis_timezone,Europe/Copenhagen
 event_flags,daytime_start_hour,6
 event_flags,daytime_end_hour,24
+event_flags,shorts_launch_date,2021-07-13
 event_flags,short_max_duration_seconds,180
 event_flags,short_max_aspect_ratio,1
-event_flags,shorts_watch_events,10
-event_flags,longs_watch_events,260
+event_flags,shorts_watch_events,0
+event_flags,longs_watch_events,270
 event_flags,watch_events_missing_shorts_metadata,57
+event_flags,watch_events_before_shorts_launch_date,213
 event_flags,daytime_watch_events,237
 event_flags,nighttime_watch_events,33
 problematic_views,errored_unique_videos,54
